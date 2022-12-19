@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FireAxe.Models.Curves
 {
-    public class Straigth : Curve2D
+    public class Straigth : Curve
     {
         private Double3m Direction;
         private Double3m Offset;

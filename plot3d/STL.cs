@@ -16,7 +16,7 @@ namespace Importer.Models
             indices = new List<int>();
             header = data[..80];
             int triangleP = 84;
-            int expectedTriangles = data[BitConverter.ToInt32(data[80..84])];//bro, wtf
+            //int expectedTriangles = data[BitConverter.ToInt32(data[80..84])];//bro, wtf
             triangles = new List<Triangle>();
 
             for (int i = 0; i < (data.Length-84)/50; i++)
@@ -82,7 +82,7 @@ namespace Importer.Models
                 {
 
 
-                    IEnumerable<KeyValuePair<int, Point3D>> point = vertices.Where(x => getMaxDistance(x.Value, vertex) < modeltolerance);
+                    IEnumerable<KeyValuePair<int, Point3D>> point = vertices.TakeLast(128).Where(x => getMaxDistance(x.Value, vertex) < modeltolerance);
 
                     if (point.Count() != 0)
                     {

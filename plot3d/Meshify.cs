@@ -19,7 +19,7 @@ namespace plot3d
             return mesh;
         }
 
-        public static MeshGeometry3D Mesh(Curve2D line, double width = 0.02)
+        public static MeshGeometry3D MeshCurve(Curve line, double width = 0.02)
         {
             double SegmentResolution = 1d / 512d;
             if (line.GetType() == typeof(Straigth)) SegmentResolution = 1;
@@ -52,7 +52,7 @@ namespace plot3d
                 mesh.TriangleIndices.Add(index++);
                 mesh.TriangleIndices.Add(index++);
                 mesh.TriangleIndices.Add(index++);
-                Debug.WriteLine(Math.Pow(previousPoint.X, 2) + Math.Pow(previousPoint.Y ,2));
+                //Debug.WriteLine(Math.Pow(previousPoint.X, 2) + Math.Pow(previousPoint.Y ,2));
                 previousPoint = segmentEnumerator.Current;
             }
                 

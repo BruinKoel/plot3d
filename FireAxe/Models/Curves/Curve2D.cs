@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FireAxe.Models.Curves
 {
-    public abstract class Curve2D
+    public abstract class Curve
     {
         public abstract Double3m GetPoint(double T);
     }

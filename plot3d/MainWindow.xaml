@@ -22,6 +22,10 @@
         <Button x:Name="button1" Grid.Column="1" Content="Clear" HorizontalAlignment="Left" Margin="107,38,0,0" VerticalAlignment="Top" Click="button1_Click"/>
         <Button x:Name="button2" Grid.Column="1" Content="SimpleSpline" HorizontalAlignment="Left" Margin="12,63,0,0" VerticalAlignment="Top" Height="23" Width="69" Click="button2_Click"/>
         <Button x:Name="button3" Grid.Column="1" Content="trackcamera" HorizontalAlignment="Left" Margin="107,66,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.146,0.077" Click="button3_Click"/>
-
+        <Button x:Name="button4" Grid.Column="1" Content="Circle cubic" HorizontalAlignment="Left" Margin="12,91,0,0" VerticalAlignment="Top" Width="69" Click="button4_Click"/>
+        <Button x:Name="button5" Grid.Column="1" Content="Load Stl" HorizontalAlignment="Left" Margin="107,91,0,0" VerticalAlignment="Top" Width="68" Click="button5_Click"/>
+        <Border Grid.Column="1" Margin="0,175,69,10" >
+            <TextBlock x:Name="textBlock"  Grid.Column="1" HorizontalAlignment="Left" Margin="47,149,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="71" Width="248"><Run Text="Don't load S"/><Run Language="en-gb" Text="TL files with more than 50.000 triangles, it will take a very long time."/></TextBlock>
+        </Border>
     </Grid>
 </Window>

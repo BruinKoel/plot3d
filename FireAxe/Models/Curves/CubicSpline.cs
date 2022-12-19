@@ -1,6 +1,6 @@
 ﻿namespace FireAxe.Models.Curves
 {
-    public class CubicSpline : Curve2D
+    public class CubicSpline : Curve
     {
         List<Straigth> straights;
         public CubicSpline(List<Double3m> points)
@@ -24,7 +24,7 @@
 
         public override Double3m GetPoint(double T)
         {
-            double t = T * ((straights.Count - 2) / 2);
+            double t = T * ((straights.Count - 1) / 2);
             double localT = t % 1;
             int index = (int)Math.Floor(t) * 2;
 

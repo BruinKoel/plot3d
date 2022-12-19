@@ -1,11 +1,15 @@
 ﻿using FireAxe.Models;
 using FireAxe.Models.Curves;
+using Importer.Models;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Media.Media3D;
 
 namespace plot3d
 {
@@ -63,8 +67,8 @@ namespace plot3d
         private void button_Click(object sender, RoutedEventArgs e)
         {
             //DisableTrack = !DisableTrack;
-            //plot.addModel(Meshify.Mesh(new CubicSpline( randomPoints()), 0.002));
-            plot.addModel(Meshify.Mesh(new CubicSpline(circlePoints(16)), 0.004));
+            //plot.addModel(Meshify.MeshCurve(new CubicSpline( randomPoints()), 0.002));
+            plot.addModel(Meshify.MeshCurve(new CubicSpline(randomPoints()), 0.004));
 
         }
         FireAxe.Models.Double3m previousPoint = new FireAxe.Models.Point();
@@ -103,14 +107,15 @@ namespace plot3d
         }
         private List<Double3m> circlePoints(int count = 100)
         {
+            double tempZ = random.NextDouble()*100;
             List<Double3m> kek = new List<Double3m>();
-            for (int i = 1; i < count; i++)
+            for (int i = -1; i < count; i++)
             {
                 kek.Add( new FireAxe.Models.Double3m()
                 {
                     X = Math.Cos(((double)i/ (double)count) * 2*Math.PI),
                     Y = Math.Sin(((double)i / (double)count) * 2 * Math.PI),
-                    Z = (1)
+                    Z = tempZ
                 });
             }
             kek.Add(kek.First());
@@ -126,12 +131,42 @@ namespace plot3d
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
-            plot.addModel(Meshify.Mesh(new SimpleSpline(randomPoints()), 0.02));
+            plot.addModel(Meshify.MeshCurve(new SimpleSpline(randomPoints()), 0.02));
         }
 
         private void button3_Click(object sender, RoutedEventArgs e)
         {
             DisableTrack = !DisableTrack;
+        }
+
+        private void button4_Click(object sender, RoutedEventArgs e)
+        {
+            plot.addModel(Meshify.MeshCurve(new CubicSpline(circlePoints(random.Next(4,100))), 0.004));
+        }
+
+        private void button5_Click(object sender, RoutedEventArgs e)
+        {
+            double offsett = random.NextDouble() * 5;
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                STL stl = new STL(System.IO.File.ReadAllBytes(openFileDialog.FileName));
+                
+                MeshGeometry3D mesh = new MeshGeometry3D();
+                stl.CalculateIndices();
+                
+
+                mesh.TriangleIndices = new System.Windows.Media.Int32Collection(stl.indices);
+                mesh.Positions = new Point3DCollection(stl.vertices.OrderBy(x => x.Key).Select(x => new Point3D(
+                    x.Value.X + offsett,
+                    x.Value.Y + offsett,
+                    x.Value.Z + offsett)));
+                mesh.Normals = new Vector3DCollection(stl.triangles.Select(x => x.normal));
+
+
+                plot.addModel(mesh);
+            }
+                
         }
     }
 }

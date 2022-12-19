@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FireAxe.Models.Curves
 {
-    public class Parabola : Curve2D
+    public class Parabola : Curve
     {
         private double A;
         private double B;

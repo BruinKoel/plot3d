@@ -7,7 +7,7 @@ namespace FireAxe.Models
         public Double3m Start { get { return Curve2D.GetPoint(0); } }
         public Double3m End { get { return Curve2D.GetPoint(1); } }
 
-        private Curve2D Curve2D { get; set; }
+        private Curve Curve2D { get; set; }
 
         public double SegmentResolution { get; set; }
 
