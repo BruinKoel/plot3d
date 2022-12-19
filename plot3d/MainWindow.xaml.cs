@@ -107,7 +107,7 @@ namespace plot3d
         }
         private List<Double3m> circlePoints(int count = 100)
         {
-            double tempZ = random.NextDouble()*100;
+            double tempZ = random.NextDouble()*10;
             List<Double3m> kek = new List<Double3m>();
             for (int i = -1; i < count; i++)
             {
@@ -141,7 +141,7 @@ namespace plot3d
 
         private void button4_Click(object sender, RoutedEventArgs e)
         {
-            plot.addModel(Meshify.MeshCurve(new CubicSpline(circlePoints(random.Next(4,100))), 0.004));
+            plot.addModel(Meshify.MeshCurve(new CubicSpline(circlePoints(random.Next(16,32))), 0.004));
         }
 
         private void button5_Click(object sender, RoutedEventArgs e)
@@ -153,7 +153,7 @@ namespace plot3d
                 STL stl = new STL(System.IO.File.ReadAllBytes(openFileDialog.FileName));
                 
                 MeshGeometry3D mesh = new MeshGeometry3D();
-                stl.CalculateIndices();
+                stl.QuickIndices();
                 
 
                 mesh.TriangleIndices = new System.Windows.Media.Int32Collection(stl.indices);

@@ -70,6 +70,21 @@ namespace Importer.Models
             tempo += Math.Abs(p1.Y - p2.Y);
             return tempo + Math.Abs(p1.Z - p2.Z);
         }
+        public void QuickIndices()
+        {
+            int count = 0;
+            vertices = new Dictionary<int, Point3D>();
+
+            foreach (Triangle triangle in this.triangles)
+            {
+
+                foreach (Point3D vertex in new[] { triangle.v1, triangle.v2, triangle.v3 })
+                {
+                        indices.Add(count);
+                        vertices.Add(count++, vertex);
+                }
+            }
+        }
         public void CalculateIndices(double modeltolerance = 0.00000001)
         {
             int count = 0;

@@ -27,8 +27,9 @@ public class Plot3D : Viewport3D
         camera = new PerspectiveCamera()
         {
             FieldOfView = 60,
-            LookDirection = new Vector3D(-0.4, -1, -1),
-            UpDirection = new Vector3D(0, 1, 0)
+            LookDirection = new Vector3D(1, 1, 1),
+            UpDirection = new Vector3D(0, 1, 0),
+            Position = new Point3D(-1,-1,1)
         };
         group = new Model3DGroup() { Children = { new AmbientLight(Colors.White) } };
         viewPort = new Viewport3D()
