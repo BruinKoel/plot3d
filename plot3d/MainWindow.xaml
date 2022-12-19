@@ -1,0 +1,27 @@
+﻿<Window x:Class="plot3d.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:plot3d"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="97*"/>
+            <ColumnDefinition Width="103*"/>
+        </Grid.ColumnDefinitions>
+        <TabControl x:Name="tabControl">
+            <TabItem Header="TabItem">
+                <Border Name="Plot3DBorders" Background="LightGray"/>
+            </TabItem>
+            <TabItem Header="TabItem">
+            </TabItem>
+        </TabControl>
+        <Button x:Name="button" Grid.Column="1" Content="Cubic Spline" HorizontalAlignment="Left" Margin="12,38,0,0" VerticalAlignment="Top" Click="button_Click"/>
+        <Button x:Name="button1" Grid.Column="1" Content="Clear" HorizontalAlignment="Left" Margin="107,38,0,0" VerticalAlignment="Top" Click="button1_Click"/>
+        <Button x:Name="button2" Grid.Column="1" Content="SimpleSpline" HorizontalAlignment="Left" Margin="12,63,0,0" VerticalAlignment="Top" Height="23" Width="69" Click="button2_Click"/>
+        <Button x:Name="button3" Grid.Column="1" Content="trackcamera" HorizontalAlignment="Left" Margin="107,66,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.146,0.077" Click="button3_Click"/>
+
+    </Grid>
+</Window>
