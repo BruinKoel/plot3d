@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FireAxe.Models.Curves
+﻿namespace FireAxe.Models.Curves
 {
     public class Straigth : Curve
     {
@@ -18,11 +12,25 @@ namespace FireAxe.Models.Curves
 
         }
 
+        public override ICollection<(Double3m, Double3m)> BoundingBoxes =>
+            new List<(Double3m, Double3m)> { new(GetPoint(0), GetPoint(1)) };
+
+        public override double RecommendedInterval => 1;
+
         public override Double3m GetPoint(double T)
         {
-            return Direction*T + Offset;
+            return Direction * T + Offset;
         }
-        
+
+        public Double3m InverseZ(double z)
+        {
+            
+            double t = (z - Offset.Z) / Direction.Z;
+            if (t < 0 || t > 1 || t == double.NaN) 
+                return null;
+
+            return GetPoint(t);
+        }
 
     }
 }

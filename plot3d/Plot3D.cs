@@ -1,5 +1,7 @@
 ﻿using plot3d;
 using System;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,14 +23,14 @@ public class Plot3D : Viewport3D
     public Plot3D()
     {
 
-
+        
 
 
         camera = new PerspectiveCamera()
         {
             FieldOfView = 60,
             LookDirection = new Vector3D(1, 1, 1),
-            UpDirection = new Vector3D(0, 1, 0),
+            UpDirection = new Vector3D(0, 0, 1),
             Position = new Point3D(-1,-1,1)
         };
         group = new Model3DGroup() { Children = { new AmbientLight(Colors.White) } };
@@ -47,7 +49,10 @@ public class Plot3D : Viewport3D
 
     public void Clear()
     {
-        group.Children.Clear();
+        foreach( var model in group.Children.Where(x => x.GetType() == typeof(GeometryModel3D)).ToArray())
+        {
+            group.Children.Remove(model);
+        }
     }
 
     protected override void OnRender(DrawingContext dc)
@@ -185,6 +190,16 @@ public class Plot3D : Viewport3D
     {
         group.Children.Clear();
     }
+    Random random = new Random();
+    public  Brush GoledenColor()
+    {
+        
+            byte[] bytes = new byte[4];
+            random.NextBytes(bytes);
+            Brush brush = new SolidColorBrush(Color.FromArgb(bytes[0], bytes[1], bytes[2], bytes[3]));
+            return brush;
+        
+    }
     public void addModel(MeshGeometry3D mesh)
     {
         //camera.Position = new Point3D(mesh.Bounds.Location.X + mesh.Bounds.SizeX * 1.6,
@@ -195,8 +210,8 @@ public class Plot3D : Viewport3D
         var model = new GeometryModel3D()
         {
             Geometry = mesh,
-            Material = new DiffuseMaterial(Brushes.DarkBlue),
-            BackMaterial = new DiffuseMaterial(Brushes.Red),
+            Material = new DiffuseMaterial(GoledenColor()),
+            BackMaterial = new DiffuseMaterial(GoledenColor()),
         };
         group.Children.Add(model);
 
@@ -219,7 +234,7 @@ public class Plot3D : Viewport3D
         if (movementspeed > 1000) movementspeed = 1000;
         else if (movementspeed < 1) movementspeed = 1;
     }
-    double f(double x, double z) => x * x + z * z;
+    
 
     protected override Size ArrangeOverride(Size finalSize)
     {
@@ -228,6 +243,10 @@ public class Plot3D : Viewport3D
         viewPort.Measure(finalSize);
         viewPort.Arrange(new Rect(viewPort.DesiredSize));
         return finalSize;
+    }
+    public void setCamera(Point3D location)
+    {
+        this.camera.Position = location;
     }
 
     protected override Visual GetVisualChild(int index) => viewPort;

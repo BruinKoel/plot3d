@@ -21,6 +21,27 @@
             }
             straights.Add(new Straigth(points.Last(), points.Last()));
         }
+        private List<(Double3m, Double3m)> boundingBoxes;
+
+        public override double RecommendedInterval => 1d / (double)(straights.Count * 4d);
+        public override IEnumerable<(Double3m, Double3m)> BoundingBoxes
+        {
+            get
+            {
+                if (boundingBoxes != null) return boundingBoxes;
+
+                boundingBoxes = new List<(Double3m, Double3m)>();
+                Double3m previous =  GetPoint(0);
+                for (double i = 1 / straights.Count; i < 1; i += 1/(double)straights.Count)
+                {
+
+                    boundingBoxes.Add(new(previous, GetPoint(i)));
+                    previous = GetPoint(i);
+                }
+
+                return FireMath.BoundingBox.Simplify( boundingBoxes);
+            }
+        }
 
         public override Double3m GetPoint(double T)
         {

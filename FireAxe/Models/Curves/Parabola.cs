@@ -11,6 +11,9 @@ namespace FireAxe.Models.Curves
         private double A;
         private double B;
         private double C;
+
+        public override IEnumerable<(Double3m, Double3m)> BoundingBoxes => throw new NotImplementedException();
+        public override double RecommendedInterval => 1d / 100;
         public override Point GetPoint(double T)
         {
             return new Point(T,((A * Math.Pow(T, 2)) + (B * T) + C),0,null);

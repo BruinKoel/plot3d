@@ -14,6 +14,10 @@
             }
         }
 
+        public override IEnumerable<(Double3m, Double3m)> BoundingBoxes => throw new NotImplementedException();
+
+        public override double RecommendedInterval => 1d/(double)(straights.Count*3d);
+
         public override Double3m GetPoint(double T)
         {
             double t = T * ((straights.Count - 2) / 2);

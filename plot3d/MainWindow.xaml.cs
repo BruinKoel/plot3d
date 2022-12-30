@@ -1,14 +1,12 @@
-﻿using FireAxe.Models;
+﻿using FireAxe.FireMath;
+using FireAxe.Models;
 using FireAxe.Models.Curves;
 using Importer.Models;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Threading;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Media.Media3D;
 
 namespace plot3d
@@ -39,7 +37,7 @@ namespace plot3d
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
 
-            meshOperator = new MeshOperator();
+            //meshOperator = new MeshOperator();
             //plot.addModel(meshOperator.mesh);
 
 
@@ -47,13 +45,13 @@ namespace plot3d
             Plot3DBorders.MouseDown += plot.Plot3D_MouseDown;
             KeyDown += plot.Plot3D_KeyDown;
             //Plot3DBorders.MouseUp += (x, e) => plot.RaiseEvent(e);
-            
+
 
             Plot3DBorders.Child = plot;
 
             System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(1000*150);
+            dispatcherTimer.Interval = new TimeSpan(1000 * 150);
             dispatcherTimer.Start();
 
 
@@ -61,14 +59,21 @@ namespace plot3d
         }
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
-            randomline();
+            MoveAlongRandomSpline();
         }
         Random random = new Random();
         private void button_Click(object sender, RoutedEventArgs e)
         {
             //DisableTrack = !DisableTrack;
             //plot.addModel(Meshify.MeshCurve(new CubicSpline( randomPoints()), 0.002));
-            plot.addModel(Meshify.MeshCurve(new CubicSpline(randomPoints()), 0.004));
+            var kek = Enumerable.Range(0, 100).Select(x => randomPoints());
+
+            //var temp = new CubicSpline(kek);
+            plot.addModel(Meshify.MeshCurve(kek.Select(x => new CubicSpline(x)), 0.01));
+            //plot.addModel(Meshify.MeshCurve(new LinearSpline(kek), 0.01));
+            //plot.addModel(Meshify.MeshBoundingBoxes(temp));
+
+            //plot.addModel(Meshify.MeshBoundingBoxes(new Straigth(randomPoints(10).First(), randomPoints(100).Last())));
 
         }
         FireAxe.Models.Double3m previousPoint = new FireAxe.Models.Point();
@@ -76,7 +81,7 @@ namespace plot3d
         CubicSpline track;
         double trackT;
 
-        private void randomline(double size = 0.00001)
+        private void MoveAlongRandomSpline(double size = 0.00001)
         {
             if (DisableTrack)
             {
@@ -86,14 +91,14 @@ namespace plot3d
             }
             track ??= new CubicSpline(randomPoints());
 
-            plot.SetCamera(track.GetPoint( trackT += size));
+            plot.SetCamera(track.GetPoint(trackT += size));
             if (trackT >= 1) DisableTrack = !DisableTrack;
         }
         private List<Double3m> randomPoints(int count = 100)
         {
             List<Double3m> kek = new List<Double3m>();
             kek.Add(new Double3m());
-            for(int i = 1; i < count; i++)
+            for (int i = 1; i < count; i++)
             {
                 kek.Add(kek[i - 1] + new FireAxe.Models.Double3m()
                 {
@@ -107,25 +112,26 @@ namespace plot3d
         }
         private List<Double3m> circlePoints(int count = 100)
         {
-            double tempZ = random.NextDouble()*10;
+            double tempZ = random.NextDouble() * 10;
             List<Double3m> kek = new List<Double3m>();
             for (int i = -1; i < count; i++)
             {
-                kek.Add( new FireAxe.Models.Double3m()
+                kek.Add(new FireAxe.Models.Double3m()
                 {
-                    X = Math.Cos(((double)i/ (double)count) * 2*Math.PI),
-                    Y = Math.Sin(((double)i / (double)count) * 2 * Math.PI),
-                    Z = tempZ
+                    X = Math.Cos(((double)i / (double)count) * 2 * Math.PI),
+                    Z = Math.Sin(((double)i / (double)count) * 2 * Math.PI),
+                    Y = kok
                 });
             }
             kek.Add(kek.First());
-            
+
 
             return kek;
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
+
             plot.Clear();
         }
 
@@ -138,10 +144,10 @@ namespace plot3d
         {
             DisableTrack = !DisableTrack;
         }
-
+        int kok = 0;
         private void button4_Click(object sender, RoutedEventArgs e)
         {
-            plot.addModel(Meshify.MeshCurve(new CubicSpline(circlePoints(random.Next(16,32))), 0.004));
+            plot.addModel(Meshify.MeshBoundingBoxes(new MeshGeometry3D(), new CubicSpline(circlePoints(kok++))));
         }
 
         private void button5_Click(object sender, RoutedEventArgs e)
@@ -151,22 +157,77 @@ namespace plot3d
             if (openFileDialog.ShowDialog() == true)
             {
                 STL stl = new STL(System.IO.File.ReadAllBytes(openFileDialog.FileName));
-                
+
                 MeshGeometry3D mesh = new MeshGeometry3D();
-                stl.QuickIndices();
-                
+
+
 
                 mesh.TriangleIndices = new System.Windows.Media.Int32Collection(stl.indices);
-                mesh.Positions = new Point3DCollection(stl.vertices.OrderBy(x => x.Key).Select(x => new Point3D(
-                    x.Value.X + offsett,
-                    x.Value.Y + offsett,
-                    x.Value.Z + offsett)));
-                mesh.Normals = new Vector3DCollection(stl.triangles.Select(x => x.normal));
-
+                mesh.Positions = new Point3DCollection(stl.vertices.Select(x => Meshify.As3D(x)));
+                //mesh.Normals = new Vector3DCollection(stl.triangles.Select(x => (Vector3D)Meshify.As3D(x.normal)));
+                plot.addModel(Meshify.MeshWireframe(stl));
 
                 plot.addModel(mesh);
             }
-                
+
+        }
+
+        private void button6_Click(object sender, RoutedEventArgs e)
+        {
+            double layerheight = 0.5;
+            double offsett = random.NextDouble() * 5;
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                Construct stl = new Construct(new STL(System.IO.File.ReadAllBytes(openFileDialog.FileName)));
+
+                plot.addModel(Meshify.MeshCurve(FireAxe.FireMath.Curves.CubicSimplify(stl.Slice(layerheight)), layerheight));
+
+                //foreach (var slice in FireAxe.FireMath.Curves.CubicSimplify(stl.Slice(layerheight)))
+                //{
+                // plot.addModel(Meshify.MeshCurve(slice,layerheight));
+                //}
+                //MeshGeometry3D mesh = new MeshGeometry3D();
+                //mesh.TriangleIndices = new System.Windows.Media.Int32Collection(stl.geometry.indices);
+                //mesh.Positions = new Point3DCollection(stl.geometry.vertices.Select(x => Meshify.As3D(x)));
+                //mesh.Normals = new Vector3DCollection(stl.triangles.Select(x => (Vector3D)Meshify.As3D(x.normal)));
+
+
+                //plot.addModel(mesh);
+
+                plot.addModel(Meshify.Mesh(stl.geometry));
+
+                plot.setCamera(Meshify.As3D(stl.geometry.triangles.First().v3));
+            }
+        }
+
+        private void button7_Click(object sender, RoutedEventArgs e)
+        {
+            double layerheight = 0.5;
+            double offsett = random.NextDouble() * 5;
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                Construct stl = new Construct(new STL(System.IO.File.ReadAllBytes(openFileDialog.FileName)));
+
+                plot.addModel(Meshify.MeshCurve(Curves.LinearSimplify(stl.Slice())));
+                //foreach (var slice in FireAxe.FireMath.Curves.CubicSimplify(stl.Slice(layerheight)))
+                //{
+                // plot.addModel(Meshify.MeshCurve(slice,layerheight));
+                //}
+                //MeshGeometry3D mesh = new MeshGeometry3D();
+                //mesh.TriangleIndices = new System.Windows.Media.Int32Collection(stl.geometry.indices);
+                //mesh.Positions = new Point3DCollection(stl.geometry.vertices.Select(x => Meshify.As3D(x)));
+                //mesh.Normals = new Vector3DCollection(stl.triangles.Select(x => (Vector3D)Meshify.As3D(x.normal)));
+
+
+                //plot.addModel(mesh);
+
+                plot.addModel(Meshify.Mesh(stl.geometry));
+
+                plot.setCamera(Meshify.As3D(stl.geometry.triangles.First().v3));
+            }
         }
     }
+
 }

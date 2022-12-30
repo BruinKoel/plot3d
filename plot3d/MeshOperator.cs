@@ -23,9 +23,9 @@ namespace plot3d
             stl.CalculateIndices();
 
             
-            mesh.TriangleIndices = new System.Windows.Media.Int32Collection(stl.indices);
-            mesh.Positions = new Point3DCollection(stl.vertices.OrderBy(x => x.Key).Select(x => x.Value));
-            mesh.Normals = new Vector3DCollection(stl.triangles.Select(x => x.normal));
+            mesh.TriangleIndices = new System.Windows.Media.Int32Collection(stl.visualIndices);
+            mesh.Positions = new Point3DCollection(stl.visualVertecis.OrderBy(x => x.Key).Select(x => x.Value));
+            mesh.Normals = new Vector3DCollection(stl.triangles.Select(x => (Vector3D)Meshify.As3D( x.normal)));
 
 
 

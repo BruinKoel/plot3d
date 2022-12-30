@@ -27,5 +27,7 @@
         <Border Grid.Column="1" Margin="0,175,69,10" >
             <TextBlock x:Name="textBlock"  Grid.Column="1" HorizontalAlignment="Left" Margin="47,149,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="71" Width="248"><Run Text="Don't load S"/><Run Language="en-gb" Text="TL files with more than 50.000 triangles, it will take a very long time."/></TextBlock>
         </Border>
+        <Button x:Name="button6" Grid.Column="1" Content="SliceModel" HorizontalAlignment="Left" Margin="12,116,0,0" VerticalAlignment="Top" Height="22" Width="69" Click="button6_Click"/>
+        <Button x:Name="button7" Grid.Column="1" Content="QuickSlice" HorizontalAlignment="Left" Margin="107,118,0,0" VerticalAlignment="Top" Width="68" Click="button7_Click"/>
     </Grid>
 </Window>
