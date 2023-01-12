@@ -25,7 +25,10 @@
         <Button x:Name="button4" Grid.Column="1" Content="Circle cubic" HorizontalAlignment="Left" Margin="12,91,0,0" VerticalAlignment="Top" Width="69" Click="button4_Click"/>
         <Button x:Name="button5" Grid.Column="1" Content="Load Stl" HorizontalAlignment="Left" Margin="107,91,0,0" VerticalAlignment="Top" Width="68" Click="button5_Click"/>
         <Border Grid.Column="1" Margin="0,175,69,10" >
-            <TextBlock x:Name="textBlock"  Grid.Column="1" HorizontalAlignment="Left" Margin="47,149,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="71" Width="248"><Run Text="Don't load S"/><Run Language="en-gb" Text="TL files with more than 50.000 triangles, it will take a very long time."/></TextBlock>
+            <TextBlock x:Name="textBlock"  Grid.Column="1" 
+                       HorizontalAlignment="Left" Margin="47,149,0,0" 
+                       TextWrapping="Wrap" VerticalAlignment="Top" Height="71" 
+                       Width="248"><Run Language="en-gb" Text="the SliceModel button is recommended, the mappings don't really correspond with the names. just testing stuff. wasd to fly, drag the screen to rotate. scroll to speed up flight."/><LineBreak/><Run Language="en-gb"/></TextBlock>
         </Border>
         <Button x:Name="button6" Grid.Column="1" Content="SliceModel" HorizontalAlignment="Left" Margin="12,116,0,0" VerticalAlignment="Top" Height="22" Width="69" Click="button6_Click"/>
         <Button x:Name="button7" Grid.Column="1" Content="QuickSlice" HorizontalAlignment="Left" Margin="107,118,0,0" VerticalAlignment="Top" Width="68" Click="button7_Click"/>

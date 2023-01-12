@@ -27,6 +27,7 @@ namespace FireAxe.FireMath
                 }
                 point.printed = true;
             }
+            //if you can print all points, without any errors,the print is prefect, regardless of the path taken.
             return fitness/points.Count();
         }
     }
