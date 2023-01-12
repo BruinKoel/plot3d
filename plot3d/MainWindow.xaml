@@ -29,5 +29,6 @@
         </Border>
         <Button x:Name="button6" Grid.Column="1" Content="SliceModel" HorizontalAlignment="Left" Margin="12,116,0,0" VerticalAlignment="Top" Height="22" Width="69" Click="button6_Click"/>
         <Button x:Name="button7" Grid.Column="1" Content="QuickSlice" HorizontalAlignment="Left" Margin="107,118,0,0" VerticalAlignment="Top" Width="68" Click="button7_Click"/>
+        <Button x:Name="button8" Grid.Column="1" Content="Button" HorizontalAlignment="Left" Margin="12,143,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.275,-0.674" Width="69" Click="button8_Click"/>
     </Grid>
 </Window>

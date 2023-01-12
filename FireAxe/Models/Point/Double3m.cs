@@ -42,6 +42,7 @@ namespace FireAxe.Models
                 }
         }
 
+
         public Double3m Normal
         {
             get
@@ -51,6 +52,17 @@ namespace FireAxe.Models
                 return this / scalair;
 
             }
+        }
+
+        public static Double3m operator ^(Double3m matrix1, Double3m matrix2)
+        {
+             
+            Double3m result = new Double3m();
+            result.X = (matrix1.Y* matrix2.Z)-(matrix1.Z*matrix2.Y);
+            result.Y = (matrix1.Z * matrix2.X) - (matrix1.X * matrix2.Z);
+            result.Z = (matrix1.X * matrix2.Y) - (matrix1.Y * matrix2.X);
+
+            return result;
         }
         public static MatrixCompare Comparator
         {

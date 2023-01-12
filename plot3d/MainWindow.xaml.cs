@@ -5,6 +5,7 @@ using Importer.Models;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media.Media3D;
@@ -228,6 +229,19 @@ namespace plot3d
                 plot.setCamera(Meshify.As3D(stl.geometry.triangles.First().v3));
             }
         }
-    }
 
+        private void button8_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                Construct stl = new Construct(new STL(System.IO.File.ReadAllBytes(openFileDialog.FileName)));
+
+                File.WriteAllLines(openFileDialog.FileName + ".csv", stl.geometry.AsPointCloud());
+
+
+            }
+        }
+
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using FireAxe.Models.GeometryFormats;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace FireAxe.Models.Construction
 {
@@ -88,6 +89,18 @@ namespace FireAxe.Models.Construction
             if (indices.Contains(-1))
                 Console.WriteLine("Vertice not found");
 
+        }
+
+        public List<string> AsPointCloud()
+        {
+            List<string> result = new List<string>();
+            result.Add("X;Y;Z");
+            foreach(var point in vertices)
+            {
+                result.Add($"{point.X.ToString(CultureInfo.InvariantCulture)};{point.Y.ToString(CultureInfo.InvariantCulture)};{point.Z.ToString(CultureInfo.InvariantCulture)}");
+            }
+
+            return result;
         }
     }
 }
