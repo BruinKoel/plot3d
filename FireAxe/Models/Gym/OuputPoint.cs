@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace FireAxe.Models.Gym
 {
-    internal class OuputPoint
+    public class OuputPoint
     {
+        public Point point;
+        public OuputPoint[] supports;
+        public bool grounded;
+        public bool printed;
+        
     }
 }
