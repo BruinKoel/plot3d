@@ -182,7 +182,7 @@ namespace plot3d
             {
                 Construct stl = new Construct(new STL(System.IO.File.ReadAllBytes(openFileDialog.FileName)));
 
-                plot.addModel(Meshify.MeshCurve(FireAxe.FireMath.Curves.CubicSimplify(stl.Slice(layerheight)), layerheight));
+                plot.addModel(Meshify.MeshCurve(Curves.LinearSimplify(stl.Slice(layerheight)), layerheight));
 
                 //foreach (var slice in FireAxe.FireMath.Curves.CubicSimplify(stl.Slice(layerheight)))
                 //{

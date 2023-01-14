@@ -159,8 +159,8 @@
         }
         public static bool operator ==(Double3m matrix1, Double3m matrix2)
         {
-            if (matrix1 == Double3m.Nan && matrix2 == Double3m.Nan) return true;
-            if (matrix1 == Double3m.Nan || matrix2 == Double3m.Nan) return false;
+            if (matrix1.IsNan && matrix2.IsNan) return true;
+            if (matrix1.IsNan || matrix2.IsNan) return false;
 
             return (matrix1.X.Equals(matrix2.X) &&
                 matrix1.Y.Equals(matrix2.Y) &&

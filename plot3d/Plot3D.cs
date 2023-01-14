@@ -18,8 +18,7 @@ public class Plot3D : Viewport3D
 
     PerspectiveCamera camera;
     Model3DGroup group;
-    Point3DAnimationUsingKeyFrames positionAnim;
-    Vector3DAnimationUsingKeyFrames lookAnim;
+
     public Plot3D()
     {
 
@@ -133,7 +132,7 @@ public class Plot3D : Viewport3D
     }
     public void Rotate(double d)
     {
-        double u = 0.05;
+        double u = 0.3;
         double angleD = u * -d;
         PerspectiveCamera camera = (PerspectiveCamera)this.camera;
         Vector3D lookDirection = camera.LookDirection;
@@ -145,7 +144,7 @@ public class Plot3D : Viewport3D
 
     public void RotateVertical(double d)
     {
-        double u = 0.05;
+        double u = 0.3;
         double angleD = u * d;
         PerspectiveCamera camera = (PerspectiveCamera)this.camera;
         Vector3D lookDirection = camera.LookDirection;
@@ -174,13 +173,10 @@ public class Plot3D : Viewport3D
     {
         double u = 0.05;
         PerspectiveCamera camera = (PerspectiveCamera)this.camera;
-        Vector3D lookDirection = camera.LookDirection;
+        Vector3D lookDirection = Vector3D.CrossProduct(camera.LookDirection , new Vector3D(0,0,1));
         Point3D position = camera.Position;
 
-        (lookDirection.X, lookDirection.Y, lookDirection.Z) = (lookDirection.Z, lookDirection.X, lookDirection.Y);
-
         lookDirection.Normalize();
-
         position = position + u * lookDirection * d;
 
         camera.Position = position;
