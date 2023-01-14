@@ -8,13 +8,13 @@ namespace FireAxe.Models
 {
     public class Space
     {
-        private Point Origin;
+        private Double3m Origin;
         private Space space;
 
-        public Point GetPoint(Point point)
+        public Double3m GetPoint(Double3m point)
         {
 
-            return (Point)(point + Origin);
+            return (point + Origin);
         }
     }
 }

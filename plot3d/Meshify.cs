@@ -2,6 +2,7 @@
 using FireAxe.Models.Construction;
 using FireAxe.Models.Curves;
 using FireAxe.Models.GeometryFormats;
+using Importer.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media.Media3D;
@@ -15,6 +16,32 @@ namespace plot3d
             MeshGeometry3D mesh = new MeshGeometry3D();
 
             return mesh;
+        }
+
+        public static MeshGeometry3D MeshScalarField(ScalarField field)
+        {
+            List<Triangle> triangles = new List<Triangle>();
+            foreach(var kek in field.values)
+            {
+                triangles.Add(TriangleFromPoint(kek.Item1,kek.Item2));
+            }
+            Geometry geometry = new Geometry(triangles,true);
+
+            MeshGeometry3D mesh = new MeshGeometry3D();
+
+
+
+
+            mesh.TriangleIndices = new System.Windows.Media.Int32Collection(geometry.indices);
+            mesh.Positions = new Point3DCollection(geometry.vertices.Select(x => Meshify.As3D(x)));
+
+            return mesh;
+
+        }
+        private static Triangle TriangleFromPoint(Double3m point, double scale)
+        {
+            Triangle triangle= new Triangle(point, point + scale, point + new Double3m(-scale,scale,scale));
+            return triangle;
         }
 
         public static MeshGeometry3D MeshWireframe(Geometry geometry)

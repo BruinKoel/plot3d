@@ -11,6 +11,26 @@ namespace FireAxe.Models.Construction
 
         public List<Double3m> vertices;
         public List<int> indices;
+     
+        public Geometry() { }
+        public Geometry(List<Triangle> triangles, bool disjointed = false)
+        {
+            this.triangles = triangles;
+
+            this.LiftZ();
+
+            if (disjointed)
+            {
+                this.QuickIndex();
+            }
+            else
+            {
+                this.CalculateIndices();
+            }
+            
+        }
+
+
         public void LiftZ()
         {
             double min = double.MaxValue;
@@ -26,6 +46,23 @@ namespace FireAxe.Models.Construction
                 triangle.TransForm(direction);
             }
 
+        }
+        private void QuickIndex()
+        {
+            int index = 0;
+            vertices= new List<Double3m>();
+            indices= new List<int>();
+
+            foreach (Triangle triangle in triangles)
+            {
+                vertices.Add(triangle.v1);
+                vertices.Add(triangle.v2);
+                vertices.Add(triangle.v3);
+
+                indices.Add(index++);
+                indices.Add(index++);
+                indices.Add(index++);
+            }
         }
         public void CalculateIndices()
         {
@@ -92,7 +129,7 @@ namespace FireAxe.Models.Construction
 
         }
 
-        public ScalarField AsScalarField(double tolerance = 0.2)
+        public ScalarField AsScalarField(double tolerance = 0.4)
         {
             return new ScalarField(vertices, tolerance);
         }

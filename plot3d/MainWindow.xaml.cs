@@ -222,8 +222,9 @@ namespace plot3d
             {
                 Construct stl = new Construct(new STL(System.IO.File.ReadAllBytes(openFileDialog.FileName)));
 
-                stl.geometry.AsScalarField(0.1);
-
+                var kek =stl.geometry.AsScalarField(0.4);
+                kek.RayFill();
+                plot.addModel(Meshify.MeshScalarField(kek));
 
             }
         }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FireAxe.Models.GeometryFormats
+﻿namespace FireAxe.Models.GeometryFormats
 {
 
     public class Triangle
@@ -26,9 +20,26 @@ namespace FireAxe.Models.GeometryFormats
             this.v3 = v3;
             CalculateNormal();
         }
+
+        public Double3m Centroid
+        {
+            get
+            {
+                return (v1 + v2 + v3) / 3;
+            }
+        }
+
+        public void Scale(Double3m factor)
+        {
+            Double3m cent = Centroid;
+            v1 += factor * (v1 - cent);
+            v2 += factor * (v2 - cent);
+            v3 += factor * (v3 - cent);
+        }
+
         public void CalculateNormal()
         {
-            normal =(v2 - v1)^(v3 - v1).Normal;    
+            normal = (v2 - v1) ^ (v3 - v1).Normal;
         }
 
         public void TransForm(Double3m direction)
@@ -39,9 +50,9 @@ namespace FireAxe.Models.GeometryFormats
         }
         public void ZSort()
         {
-            if(v1.Z >  v2.Z) (v1, v2) = (v2, v1);
-            if(v1.Z > v3.Z) (v1, v2, v3) = (v3,v1, v2);
-            if(v2.Z > v3.Z) (v2, v3) = (v3, v2);
+            if (v1.Z > v2.Z) (v1, v2) = (v2, v1);
+            if (v1.Z > v3.Z) (v1, v2, v3) = (v3, v1, v2);
+            if (v2.Z > v3.Z) (v2, v3) = (v3, v2);
         }
         public void VSort()
         {

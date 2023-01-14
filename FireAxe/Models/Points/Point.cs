@@ -7,9 +7,12 @@ using System.Threading.Tasks;
 
 namespace FireAxe.Models
 {
-    public class Point : Double3m
+    public class Point
     {
-        
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double Z { get; set; }
+
 
         public Space Origin { get; set; }
 

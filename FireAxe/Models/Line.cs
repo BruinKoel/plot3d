@@ -11,20 +11,13 @@ namespace FireAxe.Models
 
         public double SegmentResolution { get; set; }
 
-        public Line(Point start, Point end, double depth = 1000)
+        public Line( Double3m start,  Double3m end, double depth = 1000)
         {
             Curve2D = new Straigth(start, end);
             SegmentResolution = 1 / depth;
 
         }
-        public Line(Double3m start, Double3m end, double depth = 1000)
-            : this(new Point(start.X,start.Y,start.Z),
-                  new Point(end.X, end.Y, end.Z),
-                  depth)
-        {
-            
 
-        }
 
 
         public Double3m GetPoint(double T)
