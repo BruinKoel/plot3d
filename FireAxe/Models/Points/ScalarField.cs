@@ -41,7 +41,7 @@ namespace FireAxe.Models
 
         public void AddBoundingBoxIntersection((Double3m,Double3m) box)
         {
-            box.Item1 = (box.Item1-offset)/ 
+            box.Item1 = (box.Item1 - offset); 
             for (int x = 0; x < field.GetLength(0); x++)
             {
                 for (int y = 0; y < field.GetLength(1); y++)
