@@ -77,7 +77,7 @@ namespace plot3d
             //plot.addModel(Meshify.MeshBoundingBoxes(new Straigth(randomPoints(10).First(), randomPoints(100).Last())));
 
         }
-        FireAxe.Models.Double3m previousPoint = new FireAxe.Models.Point();
+        FireAxe.Models.Double3m previousPoint;
         bool DisableTrack = true;
         CubicSpline track;
         double trackT;
@@ -151,7 +151,7 @@ namespace plot3d
             plot.addModel(Meshify.MeshBoundingBoxes(new MeshGeometry3D(), new CubicSpline(circlePoints(kok++))));
         }
 
-        private void button5_Click(object sender, RoutedEventArgs e)
+        private void LoadSTLButton(object sender, RoutedEventArgs e)
         {
             double offsett = random.NextDouble() * 5;
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -173,7 +173,7 @@ namespace plot3d
 
         }
 
-        private void button6_Click(object sender, RoutedEventArgs e)
+        private void SliceModelButton(object sender, RoutedEventArgs e)
         {
             double layerheight = 0.5;
             double offsett = random.NextDouble() * 5;
@@ -202,7 +202,7 @@ namespace plot3d
             }
         }
 
-        private void button7_Click(object sender, RoutedEventArgs e)
+        private void QuickSliceButton(object sender, RoutedEventArgs e)
         {
             double layerheight = 0.5;
             double offsett = random.NextDouble() * 5;
@@ -230,7 +230,7 @@ namespace plot3d
             }
         }
 
-        private void button8_Click(object sender, RoutedEventArgs e)
+        private void ScalarfieldButton(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)

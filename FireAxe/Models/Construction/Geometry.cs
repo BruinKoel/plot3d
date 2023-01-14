@@ -1,4 +1,5 @@
 ﻿using FireAxe.Models.GeometryFormats;
+
 using System.Diagnostics;
 using System.Globalization;
 
@@ -19,7 +20,7 @@ namespace FireAxe.Models.Construction
                 if (triangle.v2.Z < min) min = triangle.v2.Z;
                 if (triangle.v3.Z < min) min = triangle.v3.Z;
             }
-            Double3m direction = new Point(0, 0, -min);
+            Double3m direction = new Double3m(0, 0, -min);
             foreach (Triangle triangle in triangles)
             {
                 triangle.TransForm(direction);
@@ -91,6 +92,10 @@ namespace FireAxe.Models.Construction
 
         }
 
+        public ScalarField AsScalarField()
+        {
+            return new ScalarField(vertices,0.1d);
+        }
         public List<string> AsPointCloud()
         {
             List<string> result = new List<string>();

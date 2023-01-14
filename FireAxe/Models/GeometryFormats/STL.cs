@@ -35,22 +35,22 @@ namespace FireAxe.Models.GeometryFormats
                 }
             }
 
-            triangle.normal = new Point(
+            triangle.normal = new Double3m(
                 BitConverter.ToSingle(data[(pointer)..(pointer += 4)]),
                 BitConverter.ToSingle(data[(pointer)..(pointer += 4)]),
                 BitConverter.ToSingle(data[(pointer)..(pointer += 4)]));
 
-            triangle.v1 = new Point(
+            triangle.v1 = new Double3m(
                 BitConverter.ToSingle(data[(pointer)..(pointer += 4)]),
                 BitConverter.ToSingle(data[(pointer)..(pointer += 4)]),
                 BitConverter.ToSingle(data[(pointer)..(pointer += 4)]));
 
-            triangle.v2 = new Point(
+            triangle.v2 = new Double3m(
                 BitConverter.ToSingle(data[(pointer)..(pointer += 4)]),
                 BitConverter.ToSingle(data[(pointer)..(pointer += 4)]),
                 BitConverter.ToSingle(data[(pointer)..(pointer += 4)]));
 
-            triangle.v3 = new Point(
+            triangle.v3 = new Double3m(
                 BitConverter.ToSingle(data[(pointer)..(pointer += 4)]),
                 BitConverter.ToSingle(data[(pointer)..(pointer += 4)]),
                 BitConverter.ToSingle(data[(pointer)..(pointer += 4)]));

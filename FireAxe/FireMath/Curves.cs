@@ -63,7 +63,7 @@ namespace FireAxe.FireMath
 
                 Double3m[] segments = new Double3m[] { (points[i - 2] - points[i -1] ).Normal,
                     (points[i] - points[i -1] ).Normal
-                    , null };
+                    , Double3m.Nan };
                 segments[2] = segments[1] - segments[0];
 
                 /*if ( segments[2].LengthSquared.Equals(1d))

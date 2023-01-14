@@ -45,7 +45,7 @@
         public override Double3m GetPoint(double T)
         {
             if(straigths.Count == 0) 
-                return null;
+                return Double3m.Nan;
             if (straigths.Count == 1)
                 return straigths.First().GetPoint(T);
             return straigths[(int)(T * (double)(straigths.Count - 1))]

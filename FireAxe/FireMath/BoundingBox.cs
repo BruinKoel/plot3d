@@ -50,7 +50,7 @@ namespace FireAxe.FireMath
             return temp.X * temp.Y * temp.Z;
         }
 
-        public static IEnumerable<Double3m> Expanded((Double3m, Double3m) box)
+        public static IEnumerable<Double3m> Cornered((Double3m, Double3m) box)
         {
             box = Fix(box);
             List<Double3m> temp = new List<Double3m>();

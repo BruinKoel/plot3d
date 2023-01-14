@@ -27,7 +27,7 @@
             
             double t = (z - Offset.Z) / Direction.Z;
             if (t < 0 || t > 1 || t == double.NaN) 
-                return null;
+                return Double3m.Nan;
 
             return GetPoint(t);
         }

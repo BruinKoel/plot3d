@@ -128,7 +128,7 @@ namespace plot3d
         {
             int index = mesh.Positions.Count;
 
-            foreach (Double3m v in FireAxe.FireMath.BoundingBox.Expanded(box))
+            foreach (Double3m v in FireAxe.FireMath.BoundingBox.Cornered(box))
             {
                 mesh.Positions.Add(As3D(v));
             }

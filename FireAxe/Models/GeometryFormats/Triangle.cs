@@ -14,14 +14,23 @@ namespace FireAxe.Models.GeometryFormats
         public Double3m v2;
         public Double3m v3;
         public UInt16 count;
+
         public Triangle()
         {
-            normal = new Double3m();
-            v1 = new Point();
-            v2 = new Point();
-            v3 = new Point();
-            //VSort();
         }
+
+        public Triangle(Double3m v1, Double3m v2, Double3m v3)
+        {
+            this.v1 = v1;
+            this.v2 = v2;
+            this.v3 = v3;
+            CalculateNormal();
+        }
+        public void CalculateNormal()
+        {
+            normal =(v2 - v1)^(v3 - v1).Normal;    
+        }
+
         public void TransForm(Double3m direction)
         {
             v1 += direction;

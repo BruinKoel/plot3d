@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,9 +15,10 @@ namespace FireAxe.Models.Curves
 
         public override IEnumerable<(Double3m, Double3m)> BoundingBoxes => throw new NotImplementedException();
         public override double RecommendedInterval => 1d / 100;
-        public override Point GetPoint(double T)
+        public override Double3m GetPoint(double T)
         {
-            return new Point(T,((A * Math.Pow(T, 2)) + (B * T) + C),0,null);
+            return 0d;
+
         }
     }
 }
