@@ -38,6 +38,27 @@ namespace FireAxe.Models
             Double3m index = (point - offset) / tolerance;
             field[(int)index.X, (int)index.Y, (int)index.Z] += weight;
         }
+
+        public void AddBoundingBoxIntersection((Double3m,Double3m) box)
+        {
+            box.Item1 = (box.Item1-offset)/ 
+            for (int x = 0; x < field.GetLength(0); x++)
+            {
+                for (int y = 0; y < field.GetLength(1); y++)
+                {
+                    bool hit = false;
+                    for (int z = 0; z < field.GetLength(2); z++)
+                    {
+                        if (field[x, y, z] > 0)
+                        {
+                            hit = !hit;
+                            continue;
+                        }
+                        field[x, y, z] = hit ? 1d : 0d;
+                    }
+                }
+            }
+        }
         public List<(Double3m, double)> values
         {
             get
