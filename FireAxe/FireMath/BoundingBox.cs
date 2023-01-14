@@ -1,4 +1,5 @@
 ﻿using FireAxe.Models;
+using FireAxe.Models.Construction;
 
 namespace FireAxe.FireMath
 {
@@ -50,18 +51,40 @@ namespace FireAxe.FireMath
             return temp.X * temp.Y * temp.Z;
         }
 
+        public static (Double3m, Double3m) From(Geometry geometry)
+        {
+
+            return From(geometry.vertices);
+        }
+        public static (Double3m, Double3m) From(IEnumerable<Double3m> geometry)
+        {
+
+            (Double3m, Double3m) temp = (geometry.First(), geometry.First());
+            foreach (Double3m vertex in geometry)
+            {
+                if (vertex.X < temp.Item1.X) temp.Item1.X = vertex.X;
+                else if (vertex.X > temp.Item2.X) temp.Item2.X = vertex.X;
+
+                if (vertex.Y < temp.Item1.Y) temp.Item1.Y = vertex.Y;
+                else if (vertex.Y > temp.Item2.Y) temp.Item2.Y = vertex.Y;
+
+                if (vertex.Z < temp.Item1.Z) temp.Item1.Z = vertex.Z;
+                else if (vertex.Z > temp.Item2.Z) temp.Item2.Z = vertex.Z;
+            }
+            return temp;
+        }
         public static IEnumerable<Double3m> Cornered((Double3m, Double3m) box)
         {
             box = Fix(box);
             List<Double3m> temp = new List<Double3m>();
             temp.Add(box.Item1);
-            temp.Add(new Point(box.Item1.X, box.Item1.Y, box.Item2.Z));
-            temp.Add(new Point(box.Item1.X, box.Item2.Y, box.Item2.Z));
-            temp.Add(new Point(box.Item1.X, box.Item2.Y, box.Item1.Z));
+            temp.Add(new Double3m(box.Item1.X, box.Item1.Y, box.Item2.Z));
+            temp.Add(new Double3m(box.Item1.X, box.Item2.Y, box.Item2.Z));
+            temp.Add(new Double3m(box.Item1.X, box.Item2.Y, box.Item1.Z));
 
-            temp.Add(new Point(box.Item2.X, box.Item2.Y, box.Item1.Z));
-            temp.Add(new Point(box.Item2.X, box.Item1.Y, box.Item1.Z));
-            temp.Add(new Point(box.Item2.X, box.Item1.Y, box.Item2.Z));
+            temp.Add(new Double3m(box.Item2.X, box.Item2.Y, box.Item1.Z));
+            temp.Add(new Double3m(box.Item2.X, box.Item1.Y, box.Item1.Z));
+            temp.Add(new Double3m(box.Item2.X, box.Item1.Y, box.Item2.Z));
             temp.Add(box.Item2);
 
             return temp;

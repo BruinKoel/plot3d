@@ -130,23 +130,23 @@ namespace plot3d
             return kek;
         }
 
-        private void button1_Click(object sender, RoutedEventArgs e)
+        private void ClearButton(object sender, RoutedEventArgs e)
         {
 
             plot.Clear();
         }
 
-        private void button2_Click(object sender, RoutedEventArgs e)
+        private void SimpleSplineButton(object sender, RoutedEventArgs e)
         {
             plot.addModel(Meshify.MeshCurve(new SimpleSpline(randomPoints()), 0.02));
         }
 
-        private void button3_Click(object sender, RoutedEventArgs e)
+        private void TrackCameraButton(object sender, RoutedEventArgs e)
         {
             DisableTrack = !DisableTrack;
         }
         int kok = 0;
-        private void button4_Click(object sender, RoutedEventArgs e)
+        private void CubicCircleButton(object sender, RoutedEventArgs e)
         {
             plot.addModel(Meshify.MeshBoundingBoxes(new MeshGeometry3D(), new CubicSpline(circlePoints(kok++))));
         }
@@ -202,31 +202,16 @@ namespace plot3d
             }
         }
 
-        private void QuickSliceButton(object sender, RoutedEventArgs e)
+        private void ExportAsCSVButton(object sender, RoutedEventArgs e)
         {
-            double layerheight = 0.5;
-            double offsett = random.NextDouble() * 5;
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
             {
                 Construct stl = new Construct(new STL(System.IO.File.ReadAllBytes(openFileDialog.FileName)));
 
-                plot.addModel(Meshify.MeshCurve(Curves.LinearSimplify(stl.Slice())));
-                //foreach (var slice in FireAxe.FireMath.Curves.CubicSimplify(stl.Slice(layerheight)))
-                //{
-                // plot.addModel(Meshify.MeshCurve(slice,layerheight));
-                //}
-                //MeshGeometry3D mesh = new MeshGeometry3D();
-                //mesh.TriangleIndices = new System.Windows.Media.Int32Collection(stl.geometry.indices);
-                //mesh.Positions = new Point3DCollection(stl.geometry.vertices.Select(x => Meshify.As3D(x)));
-                //mesh.Normals = new Vector3DCollection(stl.triangles.Select(x => (Vector3D)Meshify.As3D(x.normal)));
+                File.WriteAllLines(openFileDialog.FileName + ".csv", stl.geometry.AsPointCloud());
 
 
-                //plot.addModel(mesh);
-
-                plot.addModel(Meshify.Mesh(stl.geometry));
-
-                plot.setCamera(Meshify.As3D(stl.geometry.triangles.First().v3));
             }
         }
 
@@ -237,7 +222,7 @@ namespace plot3d
             {
                 Construct stl = new Construct(new STL(System.IO.File.ReadAllBytes(openFileDialog.FileName)));
 
-                File.WriteAllLines(openFileDialog.FileName + ".csv", stl.geometry.AsPointCloud());
+                stl.geometry.AsScalarField(0.1);
 
 
             }

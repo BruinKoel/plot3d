@@ -92,9 +92,9 @@ namespace FireAxe.Models.Construction
 
         }
 
-        public ScalarField AsScalarField()
+        public ScalarField AsScalarField(double tolerance = 0.2)
         {
-            return new ScalarField(vertices,0.1d);
+            return new ScalarField(vertices, tolerance);
         }
         public List<string> AsPointCloud()
         {

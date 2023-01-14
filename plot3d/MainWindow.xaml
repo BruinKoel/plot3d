@@ -19,10 +19,10 @@
             </TabItem>
         </TabControl>
         <Button x:Name="button" Grid.Column="1" Content="Cubic Spline" HorizontalAlignment="Left" Margin="12,38,0,0" VerticalAlignment="Top" Click="button_Click"/>
-        <Button x:Name="button1" Grid.Column="1" Content="Clear" HorizontalAlignment="Left" Margin="107,38,0,0" VerticalAlignment="Top" Click="button1_Click"/>
-        <Button x:Name="button2" Grid.Column="1" Content="SimpleSpline" HorizontalAlignment="Left" Margin="12,63,0,0" VerticalAlignment="Top" Height="23" Width="69" Click="button2_Click"/>
-        <Button x:Name="button3" Grid.Column="1" Content="trackcamera" HorizontalAlignment="Left" Margin="107,66,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.146,0.077" Click="button3_Click"/>
-        <Button x:Name="button4" Grid.Column="1" Content="Circle cubic" HorizontalAlignment="Left" Margin="12,91,0,0" VerticalAlignment="Top" Width="69" Click="button4_Click"/>
+        <Button x:Name="button1" Grid.Column="1" Content="Clear" HorizontalAlignment="Left" Margin="107,38,0,0" VerticalAlignment="Top" Click="ClearButton"/>
+        <Button x:Name="button2" Grid.Column="1" Content="SimpleSpline" HorizontalAlignment="Left" Margin="12,63,0,0" VerticalAlignment="Top" Height="23" Width="69" Click="SimpleSplineButton"/>
+        <Button x:Name="button3" Grid.Column="1" Content="trackcamera" HorizontalAlignment="Left" Margin="107,66,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.146,0.077" Click="TrackCameraButton"/>
+        <Button x:Name="button4" Grid.Column="1" Content="Circle cubic" HorizontalAlignment="Left" Margin="12,91,0,0" VerticalAlignment="Top" Width="69" Click="CubicCircleButton"/>
         <Button x:Name="button5" Grid.Column="1" Content="Load Stl" HorizontalAlignment="Left" Margin="107,91,0,0" VerticalAlignment="Top" Width="68" Click="LoadSTLButton"/>
         <Border Grid.Column="1" Margin="0,175,69,10" >
             <TextBlock x:Name="textBlock"  Grid.Column="1" 
@@ -31,7 +31,7 @@
                        Width="248"><Run Language="en-gb" Text="the SliceModel button is recommended, the mappings don't really correspond with the names. just testing stuff. wasd to fly, drag the screen to rotate. scroll to speed up flight."/><LineBreak/><Run Language="en-gb"/></TextBlock>
         </Border>
         <Button x:Name="button6" Grid.Column="1" Content="SliceModel" HorizontalAlignment="Left" Margin="12,116,0,0" VerticalAlignment="Top" Height="22" Width="69" Click="SliceModelButton"/>
-        <Button x:Name="button7" Grid.Column="1" Content="QuickSlice" HorizontalAlignment="Left" Margin="107,118,0,0" VerticalAlignment="Top" Width="68" Click="QuickSliceButton"/>
+        <Button x:Name="button7" Grid.Column="1" Content="CSV export" HorizontalAlignment="Left" Margin="107,118,0,0" VerticalAlignment="Top" Width="68" Click="ExportAsCSVButton"/>
         <Button x:Name="button8" Grid.Column="1" Content="ScalarField" HorizontalAlignment="Left" Margin="12,143,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.275,-0.674" Width="69" Click="ScalarfieldButton"/>
     </Grid>
 </Window>
