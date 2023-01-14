@@ -87,6 +87,7 @@ public class Plot3D : Viewport3D
 
     public void Plot3D_KeyDown(object sender, KeyEventArgs e)
     {
+        Focus();
         switch (e.Key)
         {
             case Key.NumPad6:
@@ -118,14 +119,13 @@ public class Plot3D : Viewport3D
                 MoveSideways(10);
                 break;
 
-            case Key.PageUp:
+            case Key.V:
 
-                RotateVertical(10);
+                MoveUp(10);
                 break;
 
-            case Key.PageDown:
-
-                RotateVertical(-10);
+            case Key.LeftCtrl:
+                MoveUp(-10); ;
                 break;
 
         }
@@ -171,9 +171,21 @@ public class Plot3D : Viewport3D
     }
     public void MoveSideways(double d)
     {
-        double u = 0.05;
+        double u = -0.05;
         PerspectiveCamera camera = (PerspectiveCamera)this.camera;
         Vector3D lookDirection = Vector3D.CrossProduct(camera.LookDirection , new Vector3D(0,0,1));
+        Point3D position = camera.Position;
+
+        lookDirection.Normalize();
+        position = position + u * lookDirection * d;
+
+        camera.Position = position;
+    }
+    public void MoveUp(double d)
+    {
+        double u = 0.05;
+        PerspectiveCamera camera = (PerspectiveCamera)this.camera;
+        Vector3D lookDirection = new Vector3D(0, 0, 1);
         Point3D position = camera.Position;
 
         lookDirection.Normalize();
