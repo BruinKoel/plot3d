@@ -51,7 +51,7 @@ namespace FireAxe.FireMath
 
 
             double stepsize = field.tolerance / a.Length;
-            for (double t = 0; t < 1; t += stepsize)
+            for (double t = 0; t <= 1; t += stepsize)
             {
                 b.Offset = a.GetPoint(t);
                 b.Direction = baseDirectiion * (1d-t);
