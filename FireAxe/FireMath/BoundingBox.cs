@@ -1,5 +1,6 @@
 ﻿using FireAxe.Models;
 using FireAxe.Models.Construction;
+using FireAxe.Models.GeometryFormats;
 
 namespace FireAxe.FireMath
 {
@@ -11,7 +12,7 @@ namespace FireAxe.FireMath
             (Double3m, Double3m) biggerbox = new();
             foreach (var box in Boxes)
             {
-                if (Boxes.Any(x => Contains(x, box, out biggerbox)))
+                if (Boxes.Any(x => FullyContains(x, box, out biggerbox)))
                 {
                     if (!temp.Contains(biggerbox)) { temp.Add(biggerbox); }
                 }
@@ -24,7 +25,7 @@ namespace FireAxe.FireMath
             return temp;
         }
 
-        public static bool Contains((Double3m, Double3m) box1, (Double3m, Double3m) box2, out (Double3m, Double3m) biggestBox)
+        public static bool FullyContains((Double3m, Double3m) box1, (Double3m, Double3m) box2, out (Double3m, Double3m) biggestBox)
         {
             box1 = Fix(box1);
             box2 = Fix(box2);
@@ -55,6 +56,12 @@ namespace FireAxe.FireMath
         {
 
             return From(geometry.vertices);
+        }
+
+        public static (Double3m, Double3m) From(IEnumerable<Triangle> geometry)
+        {
+
+            return From(geometry.SelectMany(x => new []{ x.v1, x.v2, x.v3 }));
         }
         public static (Double3m, Double3m) From(IEnumerable<Double3m> geometry)
         {

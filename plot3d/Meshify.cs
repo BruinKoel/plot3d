@@ -20,10 +20,11 @@ namespace plot3d
 
         public static MeshGeometry3D MeshScalarField(ScalarField field)
         {
+            field.CapWeight(4d);
             List<Triangle> triangles = new List<Triangle>();
             foreach(var kek in field.values)
             {
-                triangles.Add(TriangleFromPoint(kek.Item1,kek.Item2));
+                triangles.Add(TriangleFromPoint(kek.Item1,(kek.Item2*field.tolerance)));
             }
             Geometry geometry = new Geometry(triangles,true);
 
@@ -233,5 +234,6 @@ namespace plot3d
             return positions.Count - 1;
         }
         public static Point3D As3D(Double3m point) => new Point3D(point.X, point.Y, point.Z);
+
     }
 }

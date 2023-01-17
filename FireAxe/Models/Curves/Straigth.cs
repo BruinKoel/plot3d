@@ -2,9 +2,15 @@
 {
     public class Straigth : Curve
     {
-        private Double3m Direction;
-        private Double3m Offset;
-
+        public Double3m Direction;
+        
+        public double Length
+        {
+            get
+            {
+                return Direction.Length;
+            }
+        }
         public Straigth(Double3m start, Double3m end)
         {
             Direction = (end - start);

@@ -32,6 +32,8 @@
         </Border>
         <Button x:Name="button6" Grid.Column="1" Content="SliceModel" HorizontalAlignment="Left" Margin="12,116,0,0" VerticalAlignment="Top" Height="22" Width="69" Click="SliceModelButton"/>
         <Button x:Name="button7" Grid.Column="1" Content="CSV export" HorizontalAlignment="Left" Margin="107,118,0,0" VerticalAlignment="Top" Width="68" Click="ExportAsCSVButton"/>
+
         <Button x:Name="button8" Grid.Column="1" Content="ScalarField" HorizontalAlignment="Left" Margin="12,143,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.275,-0.674" Width="69" Click="ScalarfieldButton"/>
+        <Button x:Name="button9" Grid.Column="1" Content="Hollow ScalarField" HorizontalAlignment="Left" Margin="102,143,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.275,-0.674" Width="70" Click="HollowScalarfieldButton"/>
     </Grid>
 </Window>

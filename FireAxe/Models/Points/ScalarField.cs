@@ -1,4 +1,5 @@
 ﻿using FireAxe.FireMath;
+using FireAxe.Models.GeometryFormats;
 
 namespace FireAxe.Models
 {
@@ -6,42 +7,99 @@ namespace FireAxe.Models
     {
         double[,,] field;
         Double3m offset;
-        double tolerance;
+
+        (Double3m, Double3m) boundingBox;
+
+        public double tolerance { get; private set; }
 
         public ScalarField(IEnumerable<Double3m> points, double tolerance)
         {
-            var box = BoundingBox.From(points);
-            Double3m Crossbar = box.Item2 - box.Item1;
+            this.boundingBox = BoundingBox.From(points);
+            Double3m Crossbar = boundingBox.Item2 - boundingBox.Item1;
             Crossbar /= tolerance;
             Crossbar += 2;
 
 
             field = new double[(int)Crossbar.X, (int)Crossbar.Y, (int)Crossbar.Z];
 
-            offset = box.Item1 - tolerance;
+            offset = boundingBox.Item1 - tolerance;
 
             this.tolerance = tolerance;
 
-            Add(points);
+            AddPoint(points);
+        }
+        public ScalarField(IEnumerable<Triangle> triangles, double tolerance)
+        {
+            this.boundingBox = BoundingBox.From(triangles);
+            Double3m Crossbar = boundingBox.Item2 - boundingBox.Item1;
+            Crossbar /= tolerance;
+            Crossbar += 2;
+
+
+            field = new double[(int)Crossbar.X, (int)Crossbar.Y, (int)Crossbar.Z];
+
+            offset = boundingBox.Item1 - tolerance;
+
+            this.tolerance = tolerance;
+
+            AddTriangle(triangles);
         }
 
-        private void Add(IEnumerable<Double3m> points)
+        public bool Contains(out Double3m index, Double3m point)
+        {
+            index = (point - offset) / tolerance;
+            if (BoundingBox.Intersect(boundingBox, point))
+            {
+                return true;
+            }
+            return false;
+        }
+        public double GetPoint(Double3m point)
+        {
+            Double3m index;
+            if (Contains(out index, point))
+            {
+                return field[(int)index.X, (int)index.Y, (int)index.Z];
+            }
+            return double.NaN;
+        }
+        private void AddPoint(IEnumerable<Double3m> points, double weight = 1)
         {
             foreach (var point in points)
             {
-                AddPoint(point);
+                AddPoint(point, weight);
             }
         }
 
         public void AddPoint(Double3m point, double weight = 1)
         {
-            Double3m index = (point - offset) / tolerance;
-            field[(int)index.X, (int)index.Y, (int)index.Z] += weight;
+            Double3m index;
+            if (Contains(out index, point))
+            {
+                field[(int)index.X, (int)index.Y, (int)index.Z] += weight;
+            }
+
         }
 
-        public void AddBoundingBoxIntersection((Double3m,Double3m) box)
+
+        private void AddTriangle(IEnumerable<Triangle> triangles, double weight = 1)
         {
-            box.Item1 = (box.Item1 - offset); 
+            foreach (var triangle in triangles)
+            {
+                ScalarFields.TriangleFill(this, triangle, weight);
+            }
+        }
+
+        private void AddTriangle(Triangle triangle, double weight = 1)
+        {
+            ScalarFields.TriangleFill(this, triangle, weight);
+
+        }
+
+
+        public void AddBoundingBoxIntersection((Double3m, Double3m) box)
+        {
+            box.Item1 = (box.Item1 - offset);
             for (int x = 0; x < field.GetLength(0); x++)
             {
                 for (int y = 0; y < field.GetLength(1); y++)
@@ -79,6 +137,24 @@ namespace FireAxe.Models
             }
         }
 
+        public void CapWeight(double cap)
+        {
+            for (int x = 0; x < field.GetLength(0); x++)
+            {
+                for (int y = 0; y < field.GetLength(1); y++)
+                {
+
+                    for (int z = 0; z < field.GetLength(2); z++)
+                    {
+                        if (field[x, y, z] > cap)
+                        {
+                            field[x, y, z] = cap;
+                        }
+                    }
+                }
+            }
+
+        }
         public void RayFill()
         {
             for (int x = 0; x < field.GetLength(0); x++)
@@ -88,12 +164,16 @@ namespace FireAxe.Models
                     bool hit = false;
                     for (int z = 0; z < field.GetLength(2); z++)
                     {
-                        if (field[x, y, z] > 0)
+                        if (!hit && field[x, y, z] > 0
+                            || hit && (field[x, y, z] < 0))
                         {
                             hit = !hit;
                             continue;
                         }
+
+
                         field[x, y, z] = hit ? 1d : 0d;
+
                     }
                 }
             }

@@ -87,19 +87,9 @@ public class Plot3D : Viewport3D
 
     public void Plot3D_KeyDown(object sender, KeyEventArgs e)
     {
-        Focus();
+        
         switch (e.Key)
         {
-            case Key.NumPad6:
-
-                Rotate(10);
-                break;
-
-            case Key.NumPad4:
-
-                Rotate(-10);
-                break;
-
             case Key.S:
 
                 MoveForward(-movementspeed);
@@ -110,22 +100,22 @@ public class Plot3D : Viewport3D
                 MoveForward(movementspeed);
                 break;
             case Key.D:
-                Rotate(-1);
-                MoveSideways(-10);
+                
+                MoveSideways(-movementspeed);
                 break;
 
             case Key.A:
-                Rotate(1);
-                MoveSideways(10);
+                
+                MoveSideways(movementspeed);
                 break;
 
             case Key.V:
 
-                MoveUp(10);
+                MoveUp(movementspeed);
                 break;
 
             case Key.LeftCtrl:
-                MoveUp(-10); ;
+                MoveUp(-movementspeed); ;
                 break;
 
         }

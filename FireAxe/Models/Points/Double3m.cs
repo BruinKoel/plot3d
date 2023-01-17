@@ -53,6 +53,19 @@
 
             }
         }
+        public Double3m Rounded
+        {
+            get
+            {
+                return new Double3m()
+                {
+                    X = Math.Round(this.X),
+                    Y = Math.Round(this.Y),
+                    Z = Math.Round(this.Z)
+                };
+            }
+            
+        }
         public bool IsNan
         {
             get
@@ -74,6 +87,8 @@
 
             }
         }
+
+
 
         public static implicit operator Double3m(double matrix)
         {

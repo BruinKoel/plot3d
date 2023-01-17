@@ -228,6 +228,19 @@ namespace plot3d
 
             }
         }
+        private void HollowScalarfieldButton(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                Construct stl = new Construct(new STL(System.IO.File.ReadAllBytes(openFileDialog.FileName)));
+
+                var kek = stl.geometry.AsScalarField(0.4);
+                
+                plot.addModel(Meshify.MeshScalarField(kek));
+
+            }
+        }
 
     }
 }
