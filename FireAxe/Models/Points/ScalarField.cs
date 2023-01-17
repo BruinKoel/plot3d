@@ -155,25 +155,54 @@ namespace FireAxe.Models
             }
 
         }
-        public void RayFill()
+
+        public void Boolean()
         {
             for (int x = 0; x < field.GetLength(0); x++)
             {
                 for (int y = 0; y < field.GetLength(1); y++)
                 {
-                    bool hit = false;
+
                     for (int z = 0; z < field.GetLength(2); z++)
                     {
-                        if (!hit && field[x, y, z] > 0
-                            || hit && (field[x, y, z] < 0))
+                        if (field[x, y, z] > 0)
                         {
-                            hit = !hit;
-                            continue;
+                            field[x, y, z] = 1;
                         }
+                        else
+                        {
+                            field[x, y, z] = 0;
+                        }
+                    }
+                }
+            }
+        }
+        public void RayFill()
+        {
 
+            for (int x = 0; x < field.GetLength(0); x++)
+            {
+                bool lastHit = false;
+                for (int y = 0; y < field.GetLength(1); y++)
+                {
+                    List<int> hits = new List<int>();
+                    for (int z = 0; z < field.GetLength(2); z++)
+                    {
+                        bool hit = field[x, y, z].Equals(0);
+                        if (hit != lastHit)
+                        {
+                            hits.Add(z);
+                        }
+                        lastHit = hit;
+                    }
+                    
+                    for (int hit = 0; hit < hits.Count - 3; hit += 4)
+                    {
+                        for (int z = hits[hit+1]; z < hits[hit+2]; z++)
+                        {
 
-                        field[x, y, z] = hit ? 1d : 0d;
-
+                            field[x, y, z] =  1d;
+                        }
                     }
                 }
             }

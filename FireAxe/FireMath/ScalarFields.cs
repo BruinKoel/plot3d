@@ -14,7 +14,7 @@ namespace FireAxe.FireMath
         public static void StraightFill(ScalarField field ,  Straigth straight, double stopThreshold = 1, double fillWeight = 1)
         {
             double stepsize = field.tolerance / straight.Length;
-            for(double t = 0; t < 1; t += stepsize)
+            for(double t = 0; t <= 1; t += stepsize)
             {
                 Double3m point = straight.GetPoint(t);
 
@@ -29,7 +29,7 @@ namespace FireAxe.FireMath
         {
             
             double stepsize = field.tolerance / straight.Length;
-            for (double t = 0; t < 1; t += stepsize)
+            for (double t = 0; t <= 1; t += stepsize)
             {
                 Double3m point = straight.GetPoint(t);
                 straight2.Offset = point;
