@@ -8,7 +8,7 @@
             get
             {
                 return straigths.Select(
-                    x => FireMath.BoundingBox.Fix((x.GetPoint(0), x.GetPoint(1))));
+                    x => FireMath.BoundingBoxes.Fix((x.GetPoint(0), x.GetPoint(1))));
             }
         }
 

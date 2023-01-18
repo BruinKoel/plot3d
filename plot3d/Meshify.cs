@@ -2,31 +2,42 @@
 using FireAxe.Models.Construction;
 using FireAxe.Models.Curves;
 using FireAxe.Models.GeometryFormats;
-using Importer.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media.Media3D;
 
 namespace plot3d
 {
+    /// <summary>
+    /// This class just converts from My types to representative Geometry3D models. 
+    /// </summary>
     public static class Meshify
     {
-        public static MeshGeometry3D Mesh(object kek)
+        /// <summary>
+        /// does nothing yet,but maybe a single function to convert other edge cases? probably delete soon
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static MeshGeometry3D Mesh(object obj)
         {
             MeshGeometry3D mesh = new MeshGeometry3D();
 
             return mesh;
         }
-
+        /// <summary>
+        /// Produces a Mesh of floating triangles representing each value in the field.
+        /// </summary>
+        /// <param name="field"></param>
+        /// <returns></returns>
         public static MeshGeometry3D MeshScalarField(ScalarField field)
         {
             field.CapWeight(4d);
             List<Triangle> triangles = new List<Triangle>();
-            foreach(var kek in field.values)
+            foreach (var value in field.values)
             {
-                triangles.Add(TriangleFromPoint(kek.Item1,(kek.Item2*field.tolerance)));
+                triangles.Add(TriangleFromPoint(value.Item1, value.Item2 * field.tolerance));
             }
-            Geometry geometry = new Geometry(triangles,true);
+            Geometry geometry = new Geometry(triangles, true);
 
             MeshGeometry3D mesh = new MeshGeometry3D();
 
@@ -39,12 +50,25 @@ namespace plot3d
             return mesh;
 
         }
+        /// <summary>
+        /// generates a traingle at <paramref name="point"/> of size <paramref name="scale"/>
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="scale"></param>
+        /// <returns></returns>
         private static Triangle TriangleFromPoint(Double3m point, double scale)
         {
-            Triangle triangle= new Triangle(point, point + scale, point + new Double3m(-scale,scale,scale));
+            Triangle triangle = new Triangle(
+                point,
+                point + scale,
+                point + new Double3m(-scale, scale, scale));
             return triangle;
         }
-
+        /// <summary>
+        /// generates a Wireframe geometry 
+        /// </summary>
+        /// <param name="geometry"></param>
+        /// <returns></returns>
         public static MeshGeometry3D MeshWireframe(Geometry geometry)
         {
             MeshGeometry3D mesh = new MeshGeometry3D();
@@ -63,6 +87,11 @@ namespace plot3d
             }
             return mesh;
         }
+        /// <summary>
+        ///  mesh a boundingbox for every traingle or something?
+        /// </summary>
+        /// <param name="geometry"></param>
+        /// <returns></returns>
         public static MeshGeometry3D MeshWireframeBoundingBoxes(Geometry geometry)
         {
             MeshGeometry3D mesh = new MeshGeometry3D();
@@ -81,24 +110,42 @@ namespace plot3d
             }
             return mesh;
         }
+        /// <summary>
+        /// generate a mesh from <paramref name="line"/> with <paramref name="width"/>
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="width"></param>
+        /// <returns></returns>
         public static MeshGeometry3D MeshCurve(Curve line, double width = 0d)
         {
             return MeshCurve(new MeshGeometry3D(), line, width);
         }
 
+        /// <summary>
+        /// generate a mesh from all <paramref name="line"/>'s with <paramref name="width"/>
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="width"></param>
+        /// <returns></returns>
         public static MeshGeometry3D MeshCurve(IEnumerable<Curve> line, double width = 0d)
         {
             _ = line.Count();
             var mesh = new MeshGeometry3D();
             foreach (Curve curve in line)
             {
-                if (curve == null || curve.GetPoint(0) == null) 
+                if (curve == null || curve.GetPoint(0) == null)
                     continue;
                 mesh = MeshCurve(mesh, curve, width);
             }
             return mesh;
         }
-
+        /// <summary>
+        /// Generate a mesh from <paramref name="line"/> and add it to <paramref name="mesh"/>
+        /// </summary>
+        /// <param name="mesh"></param>
+        /// <param name="line"></param>
+        /// <param name="width"></param>
+        /// <returns></returns>
         public static MeshGeometry3D MeshCurve(MeshGeometry3D mesh, Curve line, double width = 0d)
         {
             double SegmentResolution = line.RecommendedInterval;
@@ -122,16 +169,16 @@ namespace plot3d
             int index = mesh.Positions.Count;
             while (segmentEnumerator.MoveNext())
             {
-                mesh.Positions.Add(As3D((previousPoint - width)));
-                mesh.Positions.Add(As3D((previousPoint + width)));
-                mesh.Positions.Add(As3D((segmentEnumerator.Current)));
+                mesh.Positions.Add(As3D(previousPoint - width));
+                mesh.Positions.Add(As3D(previousPoint + width));
+                mesh.Positions.Add(As3D(segmentEnumerator.Current));
                 mesh.TriangleIndices.Add(index++);
                 mesh.TriangleIndices.Add(index++);
                 mesh.TriangleIndices.Add(index++);
 
-                mesh.Positions.Add(As3D((segmentEnumerator.Current - width)));
-                mesh.Positions.Add(As3D((segmentEnumerator.Current + width)));
-                mesh.Positions.Add(As3D((previousPoint)));
+                mesh.Positions.Add(As3D(segmentEnumerator.Current - width));
+                mesh.Positions.Add(As3D(segmentEnumerator.Current + width));
+                mesh.Positions.Add(As3D(previousPoint));
                 mesh.TriangleIndices.Add(index++);
                 mesh.TriangleIndices.Add(index++);
                 mesh.TriangleIndices.Add(index++);
@@ -142,6 +189,12 @@ namespace plot3d
 
             return mesh;
         }
+        /// <summary>
+        /// generate a bounding box mesh from <paramref name="line"/>
+        /// </summary>
+        /// <param name="mesh"></param>
+        /// <param name="line"></param>
+        /// <returns></returns>
         public static MeshGeometry3D MeshBoundingBoxes(MeshGeometry3D mesh, Curve line)
         {
             mesh ??= new MeshGeometry3D();
@@ -151,12 +204,17 @@ namespace plot3d
             }
             return mesh;
         }
-
+        /// <summary>
+        /// Generate a mesh from <paramref name="box"/> and add it to <paramref name="mesh"/>
+        /// </summary>
+        /// <param name="mesh"></param>
+        /// <param name="box"></param>
+        /// <returns></returns>
         public static MeshGeometry3D MeshBox(MeshGeometry3D mesh, (Double3m, Double3m) box)
         {
             int index = mesh.Positions.Count;
 
-            foreach (Double3m v in FireAxe.FireMath.BoundingBox.Cornered(box))
+            foreach (Double3m v in FireAxe.FireMath.BoundingBoxes.Cornered(box))
             {
                 mesh.Positions.Add(As3D(v));
             }
@@ -212,6 +270,13 @@ namespace plot3d
             return mesh;
 
         }
+        /// <summary>
+        /// add triangle from to existing mesh.
+        /// </summary>
+        /// <param name="mesh"></param>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <param name="p3"></param>
         public static void addTriangle(MeshGeometry3D mesh, Point3D p1, Point3D p2, Point3D p3)
         {
             int index1 = addPoint(mesh.Positions, p1);
@@ -221,6 +286,12 @@ namespace plot3d
             mesh.TriangleIndices.Add(index2);
             mesh.TriangleIndices.Add(index3);
         }
+        /// <summary>
+        /// add point to point collection ?
+        /// </summary>
+        /// <param name="positions"></param>
+        /// <param name="point"></param>
+        /// <returns></returns>
         private static int addPoint(Point3DCollection positions, Point3D point)
         {
             for (int i = 0; i < positions.Count; i++)
@@ -233,6 +304,11 @@ namespace plot3d
             positions.Add(point);
             return positions.Count - 1;
         }
+        /// <summary>
+        /// lazy returns <see cref="Point3D"/> version of <paramref name="point"/>.
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
         public static Point3D As3D(Double3m point) => new Point3D(point.X, point.Y, point.Z);
 
     }

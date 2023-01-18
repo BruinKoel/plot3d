@@ -11,6 +11,13 @@ namespace FireAxe.FireMath
 {
     public static class ScalarFields
     {
+        /// <summary>
+        /// Fills <paramref name="field"/> with <paramref name="fillWeight"/> along <paramref name="straight"/> while cell value greater or equal to <paramref name="stopThreshold"/>  
+        /// </summary>
+        /// <param name="field"></param>
+        /// <param name="straight"></param>
+        /// <param name="stopThreshold"></param>
+        /// <param name="fillWeight"></param>
         public static void StraightFill(ScalarField field ,  Straigth straight, double stopThreshold = 1, double fillWeight = 1)
         {
             double stepsize = field.tolerance / straight.Length;
@@ -40,6 +47,12 @@ namespace FireAxe.FireMath
                 }
             }
         }
+        /// <summary>
+        /// Fills <paramref name="field"/> with <paramref name="weight"/>  representing the traingle face.
+        /// </summary>
+        /// <param name="field"></param>
+        /// <param name="triangle"></param>
+        /// <param name="weight"></param>
         public static void TriangleFill(ScalarField field, Triangle triangle, double weight = 1)
         {
 

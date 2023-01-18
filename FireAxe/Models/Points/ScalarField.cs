@@ -14,7 +14,7 @@ namespace FireAxe.Models
 
         public ScalarField(IEnumerable<Double3m> points, double tolerance)
         {
-            this.boundingBox = BoundingBox.From(points);
+            this.boundingBox = BoundingBoxes.From(points);
             Double3m Crossbar = boundingBox.Item2 - boundingBox.Item1;
             Crossbar /= tolerance;
             Crossbar += 2;
@@ -30,7 +30,7 @@ namespace FireAxe.Models
         }
         public ScalarField(IEnumerable<Triangle> triangles, double tolerance)
         {
-            this.boundingBox = BoundingBox.From(triangles);
+            this.boundingBox = BoundingBoxes.From(triangles);
             Double3m Crossbar = boundingBox.Item2 - boundingBox.Item1;
             Crossbar /= tolerance;
             Crossbar += 2;
@@ -48,7 +48,7 @@ namespace FireAxe.Models
         public bool Contains(out Double3m index, Double3m point)
         {
             index = (point - offset) / tolerance;
-            if (BoundingBox.Intersect(boundingBox, point))
+            if (BoundingBoxes.Intersect(boundingBox, point))
             {
                 return true;
             }

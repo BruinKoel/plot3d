@@ -39,7 +39,7 @@
                     previous = GetPoint(i);
                 }
 
-                return FireMath.BoundingBox.Simplify( boundingBoxes);
+                return FireMath.BoundingBoxes.Simplify( boundingBoxes);
             }
         }
 
