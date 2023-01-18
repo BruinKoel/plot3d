@@ -77,7 +77,7 @@ namespace plot3d
             //plot.addModel(Meshify.MeshBoundingBoxes(new Straigth(randomPoints(10).First(), randomPoints(100).Last())));
 
         }
-        FireAxe.Models.Double3m previousPoint;
+
         bool DisableTrack = true;
         CubicSpline track;
         double trackT;
@@ -209,7 +209,7 @@ namespace plot3d
             {
                 Construct stl = new Construct(new STL(System.IO.File.ReadAllBytes(openFileDialog.FileName)));
 
-                File.WriteAllLines(openFileDialog.FileName + ".csv", stl.geometry.AsPointCloud());
+                File.WriteAllLines(openFileDialog.FileName + ".csv", stl.geometry.AsVertexCloudStringCSV());
 
 
             }

@@ -4,6 +4,9 @@ using FireAxe.Models.GeometryFormats;
 
 namespace FireAxe.Models
 {
+    /// <summary>
+    /// Container class for geometry.
+    /// </summary>
     public class Construct
     {
         public Geometry geometry;
@@ -15,6 +18,11 @@ namespace FireAxe.Models
 
         private double layerheight;
         List<List<Curve>> Slices;
+        /// <summary>
+        /// Slice object and return bag of curves
+        /// </summary>
+        /// <param name="layerheight"></param>
+        /// <returns></returns>
         public List<List<Curve>> Slice(double layerheight = 0.4)
         {
             if (Slices != null) return Slices;
@@ -40,6 +48,10 @@ namespace FireAxe.Models
 
             return Slices;
         }
+        /// <summary>
+        /// assign <paramref name="triangle"/> to interesctions on Z Heights.
+        /// </summary>
+        /// <param name="triangle"></param>
         private void AssignTriangle(Triangle triangle)
         {
             triangle.ZSort();

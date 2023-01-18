@@ -3,6 +3,10 @@
     public class CubicSpline : Curve
     {
         List<Straigth> straights;
+        /// <summary>
+        /// Generates a new Cubic spline with questionably good control values.
+        /// </summary>
+        /// <param name="points"></param>
         public CubicSpline(List<Double3m> points)
         {
 
@@ -43,6 +47,7 @@
             }
         }
 
+        /// <inheritdoc/>
         public override Double3m GetPoint(double T)
         {
             double t = T * ((straights.Count - 1) / 2);

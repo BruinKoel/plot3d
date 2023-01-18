@@ -11,7 +11,11 @@ namespace FireAxe.Models
         (Double3m, Double3m) boundingBox;
 
         public double tolerance { get; private set; }
-
+        /// <summary>
+        /// Constructs a <see cref="ScalarField"/> from <paramref name="points"/> with <paramref name="tolerance"/>
+        /// </summary>
+        /// <param name="points"></param>
+        /// <param name="tolerance"></param>
         public ScalarField(IEnumerable<Double3m> points, double tolerance)
         {
             this.boundingBox = BoundingBoxes.From(points);
@@ -28,6 +32,11 @@ namespace FireAxe.Models
 
             AddPoint(points);
         }
+        /// <summary>
+        /// Constructs a <see cref="ScalarField"/> from <paramref name="triangles"/> with <paramref name="tolerance"/>
+        /// </summary>
+        /// <param name="triangles"></param>
+        /// <param name="tolerance"></param>
         public ScalarField(IEnumerable<Triangle> triangles, double tolerance)
         {
             this.boundingBox = BoundingBoxes.From(triangles);

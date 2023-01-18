@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace FireAxe.FireMath
 {
+    /// <summary>
+    /// Functions to do with ScalarFields
+    /// </summary>
     public static class ScalarFields
     {
         /// <summary>
@@ -32,15 +35,23 @@ namespace FireAxe.FireMath
                 }
             }
         }
-        public static void CompoundFill(ScalarField field, Straigth straight, Straigth straight2, double stopThreshold = 1, double fillWeight = 1)
+        /// <summary>
+        /// Fills a Diamond or square Area with <paramref name="fillStraight"/> along <paramref name="pathStraight"/>
+        /// </summary>
+        /// <param name="field"></param>
+        /// <param name="pathStraight"></param>
+        /// <param name="fillStraight"></param>
+        /// <param name="stopThreshold"></param>
+        /// <param name="fillWeight"></param>
+        public static void CompoundFill(ScalarField field, Straigth pathStraight, Straigth fillStraight, double stopThreshold = 1, double fillWeight = 1)
         {
             
-            double stepsize = field.tolerance / straight.Length;
+            double stepsize = field.tolerance / pathStraight.Length;
             for (double t = 0; t <= 1; t += stepsize)
             {
-                Double3m point = straight.GetPoint(t);
-                straight2.Offset = point;
-                StraightFill(field, straight2, stopThreshold, fillWeight);
+                Double3m point = pathStraight.GetPoint(t);
+                fillStraight.Offset = point;
+                StraightFill(field, fillStraight, stopThreshold, fillWeight);
                 if ((field.GetPoint(point) - fillWeight) >= stopThreshold)
                 {
                     break;

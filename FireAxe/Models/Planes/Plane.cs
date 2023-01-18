@@ -9,7 +9,7 @@ namespace FireAxe.Models.Planes
     public class Plane
     {
         private Space space;
-        private Point origin;
+        private Double3m origin;
 
 
     }

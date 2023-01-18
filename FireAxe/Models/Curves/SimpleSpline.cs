@@ -1,7 +1,7 @@
 ﻿namespace FireAxe.Models.Curves
 {
     /// <summary>
-    /// A <see cref="Curve"/> composed of <see cref="Straigth"/>'s
+    /// A Polynomial spline ^2 <see cref="Curve"/> 
     /// </summary>
     public class SimpleSpline : Curve
     {
@@ -20,11 +20,11 @@
                 straights.Add(new Straigth(points[i], points[i + 1]));
             }
         }
-        
+        /// <inheritdoc/>
         public override IEnumerable<(Double3m, Double3m)> BoundingBoxes => throw new NotImplementedException();
-
+        /// <inheritdoc/>
         public override double RecommendedInterval => 1d/(double)(straights.Count*3d);
-
+        /// <inheritdoc/>
         public override Double3m GetPoint(double T)
         {
             double t = T * ((straights.Count - 2) / 2);

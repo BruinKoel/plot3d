@@ -20,7 +20,9 @@
             this.v3 = v3;
             CalculateNormal();
         }
-
+        /// <summary>
+        /// Returns the Centroid of the Triangle
+        /// </summary>
         public Double3m Centroid
         {
             get
@@ -28,7 +30,10 @@
                 return (v1 + v2 + v3) / 3;
             }
         }
-
+        /// <summary>
+        /// Scales the triangle
+        /// </summary>
+        /// <param name="factor"></param>
         public void Scale(Double3m factor)
         {
             Double3m cent = Centroid;
@@ -36,18 +41,26 @@
             v2 += factor * (v2 - cent);
             v3 += factor * (v3 - cent);
         }
-
+        /// <summary>
+        /// Calculates the Vector Normal to the Face of the Triangle. I think i did the right hand rule right, haven't checked.
+        /// </summary>
         public void CalculateNormal()
         {
-            normal = (v2 - v1) ^ (v3 - v1).Normal;
+            normal = ((v2 - v1) ^ (v3 - v1)).Normal;
         }
-
+        /// <summary>
+        /// moves the triangle by <paramref name="direction"/>
+        /// </summary>
+        /// <param name="direction"></param>
         public void TransForm(Double3m direction)
         {
             v1 += direction;
             v2 += direction;
             v3 += direction;
         }
+        /// <summary>
+        /// Reordes the Vertices based on Z value
+        /// </summary>
         public void ZSort()
         {
             if (v1.Z > v2.Z) (v1, v2) = (v2, v1);

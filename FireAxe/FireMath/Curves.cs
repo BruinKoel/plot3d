@@ -7,6 +7,11 @@ namespace FireAxe.FireMath
 {
     public static class Curves
     {
+        /// <summary>
+        /// Simplifies a Bag of curves to a simplified list of <see cref="LinearSpline"/>
+        /// </summary>
+        /// <param name="slices"></param>
+        /// <returns></returns>
         public static List<Curve> LinearSimplify(List<List<Curve>> slices)
         {
             int startingCount = slices.SelectMany(x => x).Count();
@@ -24,6 +29,11 @@ namespace FireAxe.FireMath
             Debug.WriteLine($"removed {startingCount - finalCount} curves {(double)finalCount / (double)startingCount} ratio");
             return curves;
         }
+        /// <summary>
+        /// Simplifies a Bag of curves to a list of <see cref="CubicSpline"/>
+        /// </summary>
+        /// <param name="slices"></param>
+        /// <returns></returns>
         public static List<Curve> CubicSimplify(List<List<Curve>> slices)
         {
             int startingCount = slices.SelectMany(x => x).Count();
@@ -41,7 +51,11 @@ namespace FireAxe.FireMath
             Debug.WriteLine($"removed {startingCount - finalCount} curves {(double)finalCount / (double)startingCount} ratio");
             return curves;
         }
-
+        /// <summary>
+        /// Simplifies a list of curves to a <see cref="CubicSpline"/>
+        /// </summary>
+        /// <param name="curves"></param>
+        /// <returns></returns>
         public static Curve CubicRetrace(List<Curve> curves)
         {
             List<Double3m> points = new();
@@ -75,7 +89,12 @@ namespace FireAxe.FireMath
             return new CubicSpline(points);
 
         }
-
+        /// <summary>
+        /// Returns A bag of curves Grouped and ordered by connectedness.
+        /// I think there where some currve orientations issues here? but it's been while.
+        /// </summary>
+        /// <param name="curves"></param>
+        /// <returns></returns>
         public static IEnumerable<List<Curve>> getConnectedCurves(List<Curve> curves)
         {
             List<List<Curve>> CurveBag = new List<List<Curve>>();
@@ -109,7 +128,12 @@ namespace FireAxe.FireMath
             return CurveBag;
 
         }
-
+        /// <summary>
+        /// returns True if the 2 curves are connected.
+        /// </summary>
+        /// <param name="curve1"></param>
+        /// <param name="curve2"></param>
+        /// <returns></returns>
         public static bool IsConnected(Curve curve1, Curve curve2)
                 => (curve1.GetPoint(0) == curve2.GetPoint(1))
                 || (curve1.GetPoint(1) == curve2.GetPoint(0))

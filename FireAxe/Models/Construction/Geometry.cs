@@ -5,6 +5,9 @@ using System.Globalization;
 
 namespace FireAxe.Models.Construction
 {
+    /// <summary>
+    /// ParentClass for triangulated mesh types, like STL
+    /// </summary>
     public class Geometry
     {
         public List<Triangle> triangles;
@@ -30,7 +33,9 @@ namespace FireAxe.Models.Construction
             
         }
 
-
+        /// <summary>
+        ///  makes sure all points are on Positive Z values.
+        /// </summary>
         public void LiftZ()
         {
             double min = double.MaxValue;
@@ -47,6 +52,9 @@ namespace FireAxe.Models.Construction
             }
 
         }
+        /// <summary>
+        /// Quickly produces vertices and indices but has Poor  render performance.
+        /// </summary>
         private void QuickIndex()
         {
             int index = 0;
@@ -64,6 +72,9 @@ namespace FireAxe.Models.Construction
                 indices.Add(index++);
             }
         }
+        /// <summary>
+        /// Calculate the Vertices and indices for this object so that it can be "efficiently" drawn.
+        /// </summary>
         public void CalculateIndices()
         {
             vertices = new List<Double3m>();
@@ -77,6 +88,10 @@ namespace FireAxe.Models.Construction
             }
             Debug.WriteLine($"Loaded STL, vertex ratio {(double)vertices.Count / (double)(triangles.Count * 3d)}");
         }
+        /// <summary>
+        /// Calculates the Indices and Vertices collection for aa give list of triangles.
+        /// </summary>
+        /// <param name="triangles"></param>
         public void CalculateIndices(List<Triangle> triangles)
         {
             var compare = Double3m.Comparator;
@@ -128,12 +143,20 @@ namespace FireAxe.Models.Construction
                 Console.WriteLine("Vertice not found");
 
         }
-
+        /// <summary>
+        /// returns a scalrfield representation of this Geometry object
+        /// </summary>
+        /// <param name="tolerance"></param>
+        /// <returns></returns>
         public ScalarField AsScalarField(double tolerance = 0.4)
         {
             return new ScalarField(triangles, tolerance);
         }
-        public List<string> AsPointCloud()
+        /// <summary>
+        /// Returns PointCloudStringRepresentation for CSV export, should find a better place for this or remove, who knows.
+        /// </summary>
+        /// <returns></returns>
+        public List<string> AsVertexCloudStringCSV()
         {
             List<string> result = new List<string>();
             result.Add("X;Y;Z");

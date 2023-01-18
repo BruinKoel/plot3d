@@ -3,17 +3,11 @@
     public class LinearSpline : Curve
     {
         private List<Straigth> straigths;
-        public override IEnumerable<(Double3m, Double3m)> BoundingBoxes
-        {
-            get
-            {
-                return straigths.Select(
-                    x => FireMath.BoundingBoxes.Fix((x.GetPoint(0), x.GetPoint(1))));
-            }
-        }
 
-        public override double RecommendedInterval => 1d / (double)(straigths.Count);
-
+        /// <summary>
+        /// Generates a <see cref="LinearSpline"/> Going straight from point to point
+        /// </summary>
+        /// <param name="points"></param>
         public LinearSpline(List<Double3m> points)
         {
             Double3m prev = points.First();
@@ -24,6 +18,10 @@
                 prev = points[i];
             }
         }
+        /// <summary>
+        /// Generates a curde Retracing of Curves as if they are connected.
+        /// </summary>
+        /// <param name="curves"></param>
         public LinearSpline(List<Curve> curves) 
         {
             List<Double3m> points = new List<Double3m>();
@@ -42,6 +40,18 @@
                 
             }
         }
+        /// <inheritdoc/>
+        public override IEnumerable<(Double3m, Double3m)> BoundingBoxes
+        {
+            get
+            {
+                return straigths.Select(
+                    x => FireMath.BoundingBoxes.Fix((x.GetPoint(0), x.GetPoint(1))));
+            }
+        }
+        /// <inheritdoc/>
+        public override double RecommendedInterval => 1d / (double)(straigths.Count);
+        /// <inheritdoc/>
         public override Double3m GetPoint(double T)
         {
             if(straigths.Count == 0) 
