@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace FireAxe.Models.Curves
 {
+    /// <summary>
+    /// Stuff that might not make the cut, but is still elligble for a comeback.
+    /// </summary>
     public class Parabola : Curve
     {
-        private double A;
-        private double B;
-        private double C;
+        
 
         public override IEnumerable<(Double3m, Double3m)> BoundingBoxes => throw new NotImplementedException();
         public override double RecommendedInterval => 1d / 100;

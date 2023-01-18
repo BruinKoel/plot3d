@@ -1,12 +1,8 @@
-﻿using FireAxe.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FireAxe.Models
+﻿namespace FireAxe.Models
 {
+    // <summary>
+    /// Stuff that might not make the cut, but is still elligble for a comeback.
+    /// </summary>
     public class Point
     {
         public double X { get; set; }
@@ -16,7 +12,7 @@ namespace FireAxe.Models
 
         public Space Origin { get; set; }
 
-        public Point(double x, double y, double z, Space origin = null)
+        public Point(double x, double y, double z, Space origin)
         {
             this.X = x;
             Y = y;
@@ -35,9 +31,9 @@ namespace FireAxe.Models
             get { return Origin == null; }
         }
 
-        
 
-        
+
+
 
     }
 }

@@ -46,8 +46,7 @@ namespace FireAxe.FireMath
             Straigth a = new Straigth(triangle.v1, triangle.v3);
             Straigth b = new Straigth(triangle.v1, triangle.v2);
             Double3m baseDirectiion = b.Direction;
-
-
+            
 
 
             double stepsize = field.tolerance / a.Length;

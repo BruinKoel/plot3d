@@ -117,10 +117,14 @@ namespace FireAxe.Models
                 }
             }
         }
+        /// <summary>
+        /// returns all values with their corresponding coordinates.
+        /// </summary>
         public List<(Double3m, double)> values
         {
             get
             {
+                
                 List<(Double3m, double)> temp = new List<(Double3m, double)>();
                 for (int x = 0; x < field.GetLength(0); x++)
                 {
@@ -136,7 +140,10 @@ namespace FireAxe.Models
                 return temp;
             }
         }
-
+        /// <summary>
+        /// Limits the weight of each value to a maximum of <paramref name="cap"/>
+        /// </summary>
+        /// <param name="cap"></param>
         public void CapWeight(double cap)
         {
             for (int x = 0; x < field.GetLength(0); x++)
@@ -155,7 +162,9 @@ namespace FireAxe.Models
             }
 
         }
-
+        /// <summary>
+        /// transforms all values of the field to either 1  when greater than 1 and 0 otherwise.
+        /// </summary>
         public void Boolean()
         {
             for (int x = 0; x < field.GetLength(0); x++)
@@ -177,6 +186,9 @@ namespace FireAxe.Models
                 }
             }
         }
+        /// <summary>
+        /// tries to fill volumes but doesn't work quite right yet
+        /// </summary>
         public void RayFill()
         {
 
