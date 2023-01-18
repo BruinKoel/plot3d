@@ -8,6 +8,7 @@ Right now i am just testing the water of all this material, I take everything pr
 
 
 Ideation phases:
+
 phase 1, could i build a slicer? technically yes done. take an object slice it along the Z axis. 
 
 phase 2 what if i used splines generated from the mesh, that way it's all smooth.
