@@ -18,3 +18,5 @@ phase 3 already bored of finetuning my splines, besides ordering toolpaths has b
 phase 4 what if i represent the volume instead of the srufaces of this object, True mathematical volumetric calculations based on my current code, will be too much effort but a tought for when i have the guts to jump in that rabbit hole.
 
 current phase 5 voxels? or even more simple, field of scalar values? this feels good, because there could be a simple conversion to input variable for a model somewhere in there?
+
+Where is the Output file, I tought this was a slicer!? converting the Curves to Gcode is not high on the list right now, maybe it will become points to gcode, maybe we only do RobTargets here. thanks for reading <3.
