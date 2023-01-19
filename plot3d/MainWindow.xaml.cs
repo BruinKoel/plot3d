@@ -67,11 +67,11 @@ namespace plot3d
         {
             //DisableTrack = !DisableTrack;
             //plot.addModel(Meshify.MeshCurve(new CubicSpline( randomPoints()), 0.002));
-            var kek = Enumerable.Range(0, 100).Select(x => randomPoints());
+            var randomPoints = Enumerable.Range(0, 100).Select(x => this.randomPoints());
 
-            //var temp = new CubicSpline(kek);
-            plot.addModel(Meshify.MeshCurve(kek.Select(x => new CubicSpline(x)), 0.01));
-            //plot.addModel(Meshify.MeshCurve(new LinearSpline(kek), 0.01));
+            //var temp = new CubicSpline(randomPoints);
+            plot.addModel(Meshify.MeshCurve(randomPoints.Select(x => new CubicSpline(x)), 0.01));
+            //plot.addModel(Meshify.MeshCurve(new LinearSpline(randomPoints), 0.01));
             //plot.addModel(Meshify.MeshBoundingBoxes(temp));
 
             //plot.addModel(Meshify.MeshBoundingBoxes(new Straigth(randomPoints(10).First(), randomPoints(100).Last())));
@@ -97,11 +97,11 @@ namespace plot3d
         }
         private List<Double3m> randomPoints(int count = 100)
         {
-            List<Double3m> kek = new List<Double3m>();
-            kek.Add(new Double3m());
+            List<Double3m> points = new List<Double3m>();
+            points.Add(new Double3m());
             for (int i = 1; i < count; i++)
             {
-                kek.Add(kek[i - 1] + new FireAxe.Models.Double3m()
+                points.Add(points[i - 1] + new FireAxe.Models.Double3m()
                 {
                     X = (random.NextDouble() - 0.2),
                     Y = (random.NextDouble() - 0.2),
@@ -109,25 +109,25 @@ namespace plot3d
                 });
             }
 
-            return kek;
+            return points;
         }
         private List<Double3m> circlePoints(int count = 100)
         {
             double tempZ = random.NextDouble() * 10;
-            List<Double3m> kek = new List<Double3m>();
+            List<Double3m> points = new List<Double3m>();
             for (int i = -1; i < count; i++)
             {
-                kek.Add(new FireAxe.Models.Double3m()
+                points.Add(new FireAxe.Models.Double3m()
                 {
                     X = Math.Cos(((double)i / (double)count) * 2 * Math.PI),
                     Z = Math.Sin(((double)i / (double)count) * 2 * Math.PI),
                     Y = kok
                 });
             }
-            kek.Add(kek.First());
+            points.Add(points.First());
 
 
-            return kek;
+            return points;
         }
 
         private void ClearButton(object sender, RoutedEventArgs e)
@@ -222,10 +222,10 @@ namespace plot3d
             {
                 Construct stl = new Construct(new STL(System.IO.File.ReadAllBytes(openFileDialog.FileName)));
 
-                var kek =stl.geometry.AsScalarField(0.4);
-                kek.Boolean();
-                kek.RayFill();
-                plot.addModel(Meshify.MeshScalarField(kek));
+                var field =stl.geometry.AsScalarField(0.4);
+                field.Boolean();
+                field.RayFill();
+                plot.addModel(Meshify.MeshScalarField(field));
 
             }
         }
@@ -236,9 +236,9 @@ namespace plot3d
             {
                 Construct stl = new Construct(new STL(System.IO.File.ReadAllBytes(openFileDialog.FileName)));
 
-                var kek = stl.geometry.AsScalarField(0.4);
+                var field = stl.geometry.AsScalarField(0.4);
                 
-                plot.addModel(Meshify.MeshScalarField(kek));
+                plot.addModel(Meshify.MeshScalarField(field));
 
             }
         }
