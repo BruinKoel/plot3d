@@ -1,10 +1,10 @@
-WASD to fly, and you can click and drag the viewport to adjust your look direction
-designpatterns are for the next great version, if that ever comes.
-Also the whole wpf setup, is just terrible, but that wasn't the goal of this project.
+WASD to fly, and you can click and drag the viewport to adjust your look direction.
+overarching designpatterns are for the next great version, if that ever comes.
+Also the whole wpf setup, is just terrible, but that wasn't the goal of this project, not even sure why i am programming this in C# anymore.
 
 The Goal of the project:
 "To be determined"
-Right now i am just testing the water of all this material, I take everything problem by problem, and whenever inspiritaion strikes i add some functionality.
+Right now I am just testing the water of all this material, I take everything problem by problem, and whenever inspiritaion strikes i add some functionality.
 
 
 Ideation phases:
