@@ -1,4 +1,6 @@
-﻿namespace FireAxe.Models
+﻿using System.Collections;
+
+namespace FireAxe.Models
 {
     /// <summary>
     /// 3x1 double matrix a happy life. vector3 already exists, but then i would learn nothing.
@@ -8,7 +10,7 @@
         public double X { get; set; }
         public double Y { get; set; }
         public double Z { get; set; }
-        
+
         /// <summary>
         /// Returns a deepcopy of the object, however, struct type can just return this?
         /// </summary>
@@ -30,6 +32,20 @@
             this.Y = Y;
             this.Z = Z;
         }
+        public Double3m(Tuple<double, double, double> point)
+        {
+            this.X = point.Item1;
+            this.Y = point.Item2;
+            this.Z = point.Item3;
+        }
+
+        public Double3m(Tuple<int, int, int> point)
+        {
+            this.X = point.Item1;
+            this.Y = point.Item2;
+            this.Z = point.Item3;
+        }
+
         /// <summary>
         /// coordiante doubles are double.Nan
         /// </summary>
@@ -90,7 +106,7 @@
                     Z = Math.Round(this.Z)
                 };
             }
-            
+
         }
         /// <summary>
         /// is true when any of the coordinate components are Nan.
@@ -100,9 +116,9 @@
             get
             {
                 return
-                    (X is double.NaN
+                    X is double.NaN
                     || Y is double.NaN
-                    || Z is double.NaN);
+                    || Z is double.NaN;
             }
         }
 
@@ -129,6 +145,7 @@
         {
             return new Double3m(matrix, matrix, matrix);
         }
+        
         /// <summary>
         /// Cross product
         /// </summary>
@@ -145,6 +162,19 @@
 
             return result;
         }
+
+        /// <summary>
+        /// Dot product
+        /// </summary>
+        /// <param name="matrix1"></param>
+        /// <param name="matrix2"></param>
+        /// <returns></returns>
+        public static double operator %(Double3m matrix1, Double3m matrix2)
+        {
+            Double3m result = matrix1 * matrix2;
+            return result.X + result.Y + result.Z;
+        }
+
         /// <summary>
         /// lazy boi
         /// </summary>
@@ -160,7 +190,7 @@
         /// <returns></returns>
         public static Double3m operator +(Double3m matrix1, Double3m matrix2)
         {
-            Double3m result = matrix1.DeepClone();
+            Double3m result = new Double3m();
             result.X = matrix1.X + matrix2.X;
             result.Y = matrix1.Y + matrix2.Y;
             result.Z = matrix1.Z + matrix2.Z;
@@ -175,7 +205,7 @@
         /// <returns></returns>
         public static Double3m operator -(Double3m matrix1, Double3m matrix2)
         {
-            Double3m result = matrix1.DeepClone();
+            Double3m result = new Double3m();
             result.X = matrix1.X - matrix2.X;
             result.Y = matrix1.Y - matrix2.Y;
             result.Z = matrix1.Z - matrix2.Z;
@@ -190,7 +220,7 @@
         /// <returns></returns>
         public static Double3m operator *(Double3m matrix1, Double3m matrix2)
         {
-            Double3m result = matrix1.DeepClone();
+            Double3m result = new Double3m();
             result.X = matrix1.X * matrix2.X;
             result.Y = matrix1.Y * matrix2.Y;
             result.Z = matrix1.Z * matrix2.Z;
@@ -205,7 +235,7 @@
         /// <returns></returns>
         public static Double3m operator /(Double3m matrix1, Double3m matrix2)
         {
-            Double3m result = matrix1.DeepClone();
+            Double3m result = new Double3m();
             result.X = matrix1.X / matrix2.X;
             result.Y = matrix1.Y / matrix2.Y;
             result.Z = matrix1.Z / matrix2.Z;
@@ -220,9 +250,21 @@
         /// <returns></returns>
         public static bool operator >(Double3m matrix1, Double3m matrix2)
         {
-            return (matrix1.X > matrix2.X &&
+            return matrix1.X > matrix2.X &&
                 matrix1.Y > matrix2.Y &&
-                matrix1.Z > matrix2.Z);
+                matrix1.Z > matrix2.Z;
+        }
+        /// <summary>
+        /// Greater than
+        /// </summary>
+        /// <param name="matrix1"></param>
+        /// <param name="matrix2"></param>
+        /// <returns></returns>
+        public static bool operator >>(Double3m matrix1, Double3m matrix2)
+        {
+            return matrix1.X > matrix2.X ||
+                matrix1.Y > matrix2.Y ||
+                matrix1.Z > matrix2.Z;
         }
         /// <summary>
         /// Lesser than
@@ -232,9 +274,21 @@
         /// <returns></returns>
         public static bool operator <(Double3m matrix1, Double3m matrix2)
         {
-            return (matrix1.X < matrix2.X &&
+            return matrix1.X < matrix2.X &&
                 matrix1.Y < matrix2.Y &&
-                matrix1.Z < matrix2.Z);
+                matrix1.Z < matrix2.Z;
+        }
+        /// <summary>
+        /// Lesser than
+        /// </summary>
+        /// <param name="matrix1"></param>
+        /// <param name="matrix2"></param>
+        /// <returns></returns>
+        public static bool operator <<(Double3m matrix1, Double3m matrix2)
+        {
+            return matrix1.X < matrix2.X ||
+                matrix1.Y < matrix2.Y ||
+                matrix1.Z < matrix2.Z;
         }
         /// <summary>
         /// Equal or greater than
@@ -244,9 +298,9 @@
         /// <returns></returns>
         public static bool operator >=(Double3m matrix1, Double3m matrix2)
         {
-            return (matrix1.X >= matrix2.X &&
+            return matrix1.X >= matrix2.X &&
                 matrix1.Y >= matrix2.Y &&
-                matrix1.Z >= matrix2.Z);
+                matrix1.Z >= matrix2.Z;
         }
         /// <summary>
         /// Equal or greater than
@@ -256,9 +310,9 @@
         /// <returns></returns>
         public static bool operator <=(Double3m matrix1, Double3m matrix2)
         {
-            return (matrix1.X <= matrix2.X &&
+            return matrix1.X <= matrix2.X &&
                 matrix1.Y <= matrix2.Y &&
-                matrix1.Z <= matrix2.Z);
+                matrix1.Z <= matrix2.Z;
         }
         /// <summary>
         /// equals
@@ -271,9 +325,9 @@
             if (matrix1.IsNan && matrix2.IsNan) return true;
             if (matrix1.IsNan || matrix2.IsNan) return false;
 
-            return (matrix1.X.Equals(matrix2.X) &&
+            return matrix1.X.Equals(matrix2.X) &&
                 matrix1.Y.Equals(matrix2.Y) &&
-                matrix1.Z.Equals(matrix2.Z));
+                matrix1.Z.Equals(matrix2.Z);
         }
         /// <summary>
         /// is not equal to
@@ -286,9 +340,9 @@
             if (matrix1 == Double3m.Nan && matrix2 == Double3m.Nan) return false;
             if (matrix1 == Double3m.Nan || matrix2 == Double3m.Nan) return true;
 
-            return (!matrix1.X.Equals(matrix2.X) &&
-                !matrix1.Y.Equals(matrix2.Y) &&
-                !matrix1.Z.Equals(matrix2.Z));
+            return !matrix1.X.Equals(matrix2.X) ||
+                !matrix1.Y.Equals(matrix2.Y) ||
+                !matrix1.Z.Equals(matrix2.Z);
         }
     }
     /// <summary>
@@ -299,20 +353,17 @@
         private const double tolerance = 0.00001;
         public override bool Equals(Double3m matrix1, Double3m matrix2)
         {
-            if (matrix1.IsNan && matrix1.IsNan)
-                return true;
-            else if (matrix1.IsNan || matrix1.IsNan)
-                return false;
-
-            return matrix1.X.Equals(matrix2.X)
-                && matrix1.Y.Equals(matrix2.Y)
-                && matrix1.Z.Equals(matrix2.Z);
+            return matrix1 == matrix2;
         }
 
         public override int GetHashCode(Double3m bx)
         {
-            double hCode = bx.X * bx.Y * bx.Z;// not unique i know, this is just a quick kinda accurate dirty fix
-            return hCode.GetHashCode();
+            // :D
+            var bitArray = new BitArray(BitConverter.GetBytes(bx.X));
+            bitArray.Xor(new BitArray(BitConverter.GetBytes(bx.Y)));
+            bitArray.Xor(new BitArray(BitConverter.GetBytes(bx.Z)));
+
+            return bitArray.GetHashCode();
         }
     }
 }

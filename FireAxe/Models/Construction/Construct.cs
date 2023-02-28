@@ -9,12 +9,27 @@ namespace FireAxe.Models
     /// </summary>
     public class Construct
     {
-        public Geometry geometry;
+        public Double3m origin;
+        public Double3m normal;
 
-        public Construct(Geometry geometry)
+        public Geometry geometry;
+        public List<Construct> children;
+        public List<Geometry> geometries;
+
+        public Construct() { 
+        children = new List<Construct>();   
+        }
+        public Construct(Geometry geometry): base()
         {
             this.geometry = geometry;
         }
+        public void Add(Construct con)
+        {
+            children.Add(con);
+            con.geometry.RegenerateMesh();
+        }
+
+        
 
         private double layerheight;
         List<List<Curve>> Slices;

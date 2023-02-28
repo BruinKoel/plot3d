@@ -101,7 +101,7 @@ namespace FireAxe.FireMath
         public static (Double3m, Double3m) From(IEnumerable<Double3m> geometry)
         {
 
-            (Double3m, Double3m) temp = (geometry.First(), geometry.First());
+             (Double3m, Double3m) temp = (geometry.First(), geometry.First());
             foreach (Double3m vertex in geometry)
             {
                 if (vertex.X < temp.Item1.X) temp.Item1.X = vertex.X;

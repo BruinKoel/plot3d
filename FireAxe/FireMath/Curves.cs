@@ -1,5 +1,6 @@
 ﻿using FireAxe.Models;
 using FireAxe.Models.Curves;
+using FireAxe.Models.Primitives;
 using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 
@@ -29,6 +30,49 @@ namespace FireAxe.FireMath
             Debug.WriteLine($"removed {startingCount - finalCount} curves {(double)finalCount / (double)startingCount} ratio");
             return curves;
         }
+        public static Arc GetGeodesic(Cylinder cylinder, Double3m point1, Double3m point2)
+        {
+            // Cylinder axis direction
+            Double3m axisDirection = new Double3m(1, 1, 1);
+
+            // Transformed points
+            Double3m transformedPoint1 = Space.Rotate(point1, cylinder.normal);
+            Double3m transformedPoint2 = Space.Rotate(point2, cylinder.normal);
+
+            // Cylindrical coordinates of the transformed points
+            double theta1 = Math.Atan2(transformedPoint1.Y, transformedPoint1.X);
+            double r1 = Math.Sqrt(transformedPoint1.X * transformedPoint1.X + transformedPoint1.Y * transformedPoint1.Y);
+            double zCoord1 = transformedPoint1.Z;
+
+            double theta2 = Math.Atan2(transformedPoint2.Y, transformedPoint2.X);
+            double r2 = Math.Sqrt(transformedPoint2.X * transformedPoint2.X + transformedPoint2.Y * transformedPoint2.Y);
+            double zCoord2 = transformedPoint2.Z;
+
+            // Difference between the azimuthal angles
+            double dTheta = theta2 - theta1;
+
+            // Length of the geodesic
+            double length = cylinder.radius * Math.Abs(dTheta);
+
+            // Midpoint of the geodesic
+            double thetaMid = (theta1 + theta2) / 2;
+            double rMid = cylinder.radius;
+            double zCoordMid = (zCoord1 + zCoord2) / 2;
+
+            Double3m midPoint = new Double3m((float)(rMid * Math.Cos(thetaMid)), (float)(rMid * Math.Sin(thetaMid)), (float)zCoordMid);
+
+            // Center of the arc
+            Double3m center = midPoint + (cylinder.normal * (midPoint % cylinder.normal));
+            
+            return new Arc(
+                center,
+                ((point1 - point2) ^ (point2 - center)).Normal,
+                (point1 - center).Length,
+                theta1 / (2 * Math.PI), theta2 / (2 * Math.PI));
+
+
+        }
+
         /// <summary>
         /// Simplifies a Bag of curves to a list of <see cref="CubicSpline"/>
         /// </summary>

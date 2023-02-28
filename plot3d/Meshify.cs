@@ -25,6 +25,19 @@ namespace plot3d
             return mesh;
         }
         /// <summary>
+        /// does nothing yet,but maybe a single function to convert other edge cases? probably delete soon
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static MeshGeometry3D Mesh(Geometry geometry)
+        {
+            MeshGeometry3D mesh = new MeshGeometry3D();
+            mesh.TriangleIndices = new System.Windows.Media.Int32Collection(geometry.indices);
+            mesh.Positions = new Point3DCollection(geometry.vertices.Select(x => As3D(x)));
+
+            return mesh;
+        }
+        /// <summary>
         /// Produces a Mesh of floating triangles representing each value in the field.
         /// </summary>
         /// <param name="field"></param>
@@ -35,9 +48,9 @@ namespace plot3d
             List<Triangle> triangles = new List<Triangle>();
             foreach (var value in field.values)
             {
-                triangles.Add(TriangleFromPoint(value.Item1, value.Item2 * field.tolerance));
+                triangles.Add(TriangleFromPoint(value.Item1, value.Item2 * field.tolerance / 2));
             }
-            Geometry geometry = new Geometry(triangles, true);
+            Geometry geometry = new Form(triangles, true);
 
             MeshGeometry3D mesh = new MeshGeometry3D();
 
@@ -139,6 +152,24 @@ namespace plot3d
             }
             return mesh;
         }
+
+        public static MeshGeometry3D MeshMoves(List<Double3m> moves)
+        {
+            Double3m currentpos = 0;
+            List<Double3m> points = new List<Double3m>();
+            points.Add(currentpos);
+
+            MeshGeometry3D mesh = new MeshGeometry3D();
+            foreach (Double3m move in moves)
+            {
+                currentpos += move;
+                points.Add(currentpos);
+
+            }
+            return MeshCurve(new LinearSpline(points),0.05);
+
+        }
+
         /// <summary>
         /// Generate a mesh from <paramref name="line"/> and add it to <paramref name="mesh"/>
         /// </summary>

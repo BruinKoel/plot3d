@@ -68,6 +68,11 @@ namespace FireAxe.Models.GeometryFormats
             tempo += Math.Abs(p1.Y - p2.Y);
             return tempo + Math.Abs(p1.Z - p2.Z);
         }
+
+        public override void RegenerateMesh()
+        {
+          
+        }
     }
     
 }

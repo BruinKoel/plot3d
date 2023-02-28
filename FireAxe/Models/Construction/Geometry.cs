@@ -8,8 +8,12 @@ namespace FireAxe.Models.Construction
     /// <summary>
     /// ParentClass for triangulated mesh types, like STL
     /// </summary>
-    public class Geometry
+    public abstract class Geometry
     {
+        public Double3m origin;
+        public Double3m normal;
+
+
         public List<Triangle> triangles;
 
         public List<Double3m> vertices;
@@ -33,6 +37,10 @@ namespace FireAxe.Models.Construction
             
         }
 
+        public abstract void RegenerateMesh();
+        
+        
+
         /// <summary>
         ///  makes sure all points are on Positive Z values.
         /// </summary>
@@ -55,7 +63,7 @@ namespace FireAxe.Models.Construction
         /// <summary>
         /// Quickly produces vertices and indices but has Poor  render performance.
         /// </summary>
-        private void QuickIndex()
+        public void QuickIndex()
         {
             int index = 0;
             vertices= new List<Double3m>();
@@ -143,13 +151,26 @@ namespace FireAxe.Models.Construction
                 Console.WriteLine("Vertice not found");
 
         }
+
+        public void buildTrianglesFromIndices()
+        {
+            {
+            triangles = new List<Triangle>();
+            for (int i = 0; i < indices.Count; i += 3)
+                {
+                triangles.Add(new Triangle(vertices[indices[i]], vertices[indices[i + 1]], vertices[indices[i + 2]]));
+            }
+            }
+        }
+
         /// <summary>
         /// returns a scalrfield representation of this Geometry object
         /// </summary>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public ScalarField AsScalarField(double tolerance = 0.4)
+        public ScalarField AsScalarField(double tolerance = -1)
         {
+            buildTrianglesFromIndices();
             return new ScalarField(triangles, tolerance);
         }
         /// <summary>

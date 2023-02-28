@@ -43,6 +43,12 @@
 
             return GetPoint(t);
         }
+        public double MajorDimension()
+        {
+            double max = Math.Max(Math.Abs( Direction.X), Math.Abs(Direction.Y));
+            return Math.Max(max, Math.Abs( Direction.Z));
+            
+        }
 
     }
 }

@@ -9,6 +9,13 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media.Media3D;
+using plot3d.Views;
+using System.Diagnostics.Contracts;
+using FireAxe.Models.Primitives;
+using FireAxe.FireMath.Enviroments;
+using Agent.models.Nodes;
+using FireAxe.FireMath.Enviroments.DataViewers;
+using FireAxe.FireMath.Data;
 
 namespace plot3d
 {
@@ -49,6 +56,7 @@ namespace plot3d
 
 
             Plot3DBorders.Child = plot;
+            
 
             System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
@@ -148,7 +156,7 @@ namespace plot3d
         int kok = 0;
         private void CubicCircleButton(object sender, RoutedEventArgs e)
         {
-            plot.addModel(Meshify.MeshBoundingBoxes(new MeshGeometry3D(), new CubicSpline(circlePoints(kok++))));
+            plot.addModel(Meshify.Mesh(new Cylinder(1,4,10,new Double3m(random.NextDouble(), random.NextDouble(), random.NextDouble()).Normal)));
         }
 
         private void LoadSTLButton(object sender, RoutedEventArgs e)
@@ -222,25 +230,37 @@ namespace plot3d
             {
                 Construct stl = new Construct(new STL(System.IO.File.ReadAllBytes(openFileDialog.FileName)));
 
-                var field =stl.geometry.AsScalarField(0.4);
+                var field =stl.geometry.AsScalarField();
                 field.Boolean();
-                field.RayFill();
+                //field.RayFill();
                 plot.addModel(Meshify.MeshScalarField(field));
 
             }
         }
         private void HollowScalarfieldButton(object sender, RoutedEventArgs e)
         {
+            
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
             {
                 Construct stl = new Construct(new STL(System.IO.File.ReadAllBytes(openFileDialog.FileName)));
 
-                var field = stl.geometry.AsScalarField(0.4);
+                var field = stl.geometry.AsScalarField(0.01);
+                field.Boolean();
+                ScalarViewer scalarViewer = new ScalarViewer();
+
+                SimpleNode baseNode = new SimpleNode(scalarViewer.ViewSize, new[] { 30, 30, 27 });
+                ScalarFieldSimpleENV.Train(12, baseNode, 1000, field.DeepCopy());
                 
-                plot.addModel(Meshify.MeshScalarField(field));
+
 
             }
+            var node = TrainingFactory.Optimise(100000);
+            var keke = new ScalarFieldSimpleENV(TrainingFactory.GenerateTrainingField(8), 0, node);
+            var nicemovees = keke.ComputeMoves(TrainingFactory.GenerateTrainingField(8), 0, node);
+
+            plot.addModel(Meshify.MeshScalarField(TrainingFactory.GenerateTrainingField(8)));
+            plot.addModel(Meshify.MeshMoves(nicemovees));
         }
 
     }
