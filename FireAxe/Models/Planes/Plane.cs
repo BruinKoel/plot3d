@@ -39,10 +39,10 @@ namespace FireAxe.Models.Planes
             Double3m minorAxisDirection = new Double3m(-normal.Y, normal.X, 0);
 
             // Major axis length
-            double majorAxisLength = round.radius;
+            float majorAxisLength = round.radius;
 
             // Minor axis length
-            double minorAxisLength = round.radius * Math.Sin(Space.GetAngle(this.normal, new Double3m(0, 0, 1)));
+            float minorAxisLength = round.radius * MathF.Sin(Space.GetAngle(this.normal, new Double3m(0, 0, 1)));
 
             Console.WriteLine("Ellipse parameters:");
             Console.WriteLine("Major axis direction: ({0:0.##}, {1:0.##}, {2:0.##})", majorAxisDirection.X, majorAxisDirection.Y, majorAxisDirection.Z);

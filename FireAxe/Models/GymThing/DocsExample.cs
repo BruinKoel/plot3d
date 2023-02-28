@@ -10,12 +10,12 @@
             Console.WriteLine("Setting up maze and rewards");
             int ns = 12;
             int[][] FT = CreateMaze(ns);
-            double[][] R = CreateReward(ns);
-            double[][] Q = CreateQuality(ns);
+            float[][] R = CreateReward(ns);
+            float[][] Q = CreateQuality(ns);
             Console.WriteLine("Analyzing maze using Q-learning");
             int goal = 11;
-            double gamma = 0.5;
-            double learnRate = 0.5;
+            float gamma = 0.5f;
+            float learnRate = 0.5f;
             int maxEpochs = 1000;
             Train(FT, R, Q, goal, gamma, learnRate, maxEpochs);
             Console.WriteLine("Done. Q matrix: ");
@@ -26,7 +26,7 @@
             Console.ReadLine();
         }
 
-        private static void Print(double[][] Q)
+        private static void Print(float[][] Q)
         {
             int ns = Q.Length;
             Console.WriteLine("[0] [1] . . [11]");
@@ -53,24 +53,24 @@
             return FT;
         }
 
-        private static double[][] CreateReward(int ns)
+        private static float[][] CreateReward(int ns)
         {
-            double[][] R = new double[ns][];
-            for (int i = 0; i < ns; ++i) R[i] = new double[ns];
-            R[0][1] = R[0][4] = R[1][0] = R[1][5] = R[2][3] = -0.1;
-            R[2][6] = R[3][2] = R[3][7] = R[4][0] = R[4][8] = -0.1;
-            R[5][1] = R[5][6] = R[5][9] = R[6][2] = R[6][5] = -0.1;
-            R[6][7] = R[7][3] = R[7][6] = R[7][11] = R[8][4] = -0.1;
-            R[8][9] = R[9][5] = R[9][8] = R[9][10] = R[10][9] = -0.1;
-            R[7][11] = 10.0;  // Goal
+            float[][] R = new float[ns][];
+            for (int i = 0; i < ns; ++i) R[i] = new float[ns];
+            R[0][1] = R[0][4] = R[1][0] = R[1][5] = R[2][3] = -0.1f;
+            R[2][6] = R[3][2] = R[3][7] = R[4][0] = R[4][8] = -0.1f;
+            R[5][1] = R[5][6] = R[5][9] = R[6][2] = R[6][5] = -0.1f;
+            R[6][7] = R[7][3] = R[7][6] = R[7][11] = R[8][4] = -0.1f;
+            R[8][9] = R[9][5] = R[9][8] = R[9][10] = R[10][9] = -0.1f;
+            R[7][11] = 10.0f;  // Goal
             return R;
         }
 
-        private static double[][] CreateQuality(int ns)
+        private static float[][] CreateQuality(int ns)
         {
-            double[][] Q = new double[ns][];
+            float[][] Q = new float[ns][];
             for (int i = 0; i < ns; ++i)
-                Q[i] = new double[ns];
+                Q[i] = new float[ns];
             return Q;
         }
 
@@ -90,8 +90,8 @@
             return possNextStates[idx];
         }
 
-        private static void Train(int[][] FT, double[][] R, double[][] Q,
-             int goal, double gamma, double lrnRate, int maxEpochs)
+        private static void Train(int[][] FT, float[][] R, float[][] Q,
+             int goal, float gamma, float lrnRate, int maxEpochs)
         {
             for (int epoch = 0; epoch < maxEpochs; ++epoch)
             {
@@ -100,11 +100,11 @@
                 {
                     int nextState = GetRandNextState(currState, FT);
                     List<int> possNextNextStates = GetPossNextStates(nextState, FT);
-                    double maxQ = double.MinValue;
+                    float maxQ = float.MinValue;
                     for (int j = 0; j < possNextNextStates.Count; ++j)
                     {
                         int nns = possNextNextStates[j];  // short alias
-                        double q = Q[nextState][nns];
+                        float q = Q[nextState][nns];
                         if (q > maxQ) maxQ = q;
                     }
                     Q[currState][nextState] =
@@ -118,7 +118,7 @@
 
         }
 
-        private static void Walk(int start, int goal, double[][] Q)
+        private static void Walk(int start, int goal, float[][] Q)
         {
             int curr = start; int next;
             Console.Write(curr + "->");
@@ -132,9 +132,9 @@
         }
 
 
-        private static int ArgMax(double[] vector)
+        private static int ArgMax(float[] vector)
         {
-            double maxVal = vector[0]; int idx = 0;
+            float maxVal = vector[0]; int idx = 0;
             for (int i = 0; i < vector.Length; ++i)
             {
                 if (vector[i] > maxVal)

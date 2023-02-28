@@ -13,7 +13,7 @@ namespace FireAxe.Models
         /// </summary>
         /// <param name="T"></param>
         /// <returns></returns>
-        public abstract Double3m GetPoint(double T);
+        public abstract Double3m GetPoint(float T);
 
         /// <summary>
         /// Gets or sets the spatial offset of the <see cref="Curve"/>
@@ -23,7 +23,7 @@ namespace FireAxe.Models
         /// <summary>
         /// Recommended Sampling Interval.
         /// </summary>
-        public abstract double RecommendedInterval { get; }
+        public abstract float RecommendedInterval { get; }
 
         /// <summary>
         /// Returns boundingboxes the confine this <see cref="Curve"/>

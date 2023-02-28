@@ -50,16 +50,16 @@
             }
         }
         /// <inheritdoc/>
-        public override double RecommendedInterval => 1d / (double)(straigths.Count);
+        public override float RecommendedInterval => 1f / (float)(straigths.Count);
         /// <inheritdoc/>
-        public override Double3m GetPoint(double T)
+        public override Double3m GetPoint(float T)
         {
             if(straigths.Count == 0) 
                 return Double3m.Nan;
             if (straigths.Count == 1)
                 return straigths.First().GetPoint(T);
-            return straigths[(int)(T * (double)(straigths.Count - 1))]
-                .GetPoint((T * (double)straigths.Count) % 1);
+            return straigths[(int)(T * (float)(straigths.Count - 1))]
+                .GetPoint((T * (float)straigths.Count) % 1);
         }
     }
 }

@@ -6,7 +6,7 @@
         /// <summary>
         /// point to point length
         /// </summary>
-        public double Length
+        public float Length
         {
             get
             {
@@ -23,9 +23,9 @@
         public override ICollection<(Double3m, Double3m)> BoundingBoxes =>
             new List<(Double3m, Double3m)> { new(GetPoint(0), GetPoint(1)) };
         /// <inheritdoc/>
-        public override double RecommendedInterval => 1;
+        public override float RecommendedInterval => 1;
         /// <inheritdoc/>
-        public override Double3m GetPoint(double T)
+        public override Double3m GetPoint(float T)
         {
             return Direction * T + Offset;
         }
@@ -34,19 +34,19 @@
         /// </summary>
         /// <param name="z"></param>
         /// <returns></returns>
-        public Double3m InverseZ(double z)
+        public Double3m InverseZ(float z)
         {
             
-            double t = (z - Offset.Z) / Direction.Z;
-            if (t < 0 || t > 1 || t == double.NaN) 
+            float t = (z - Offset.Z) / Direction.Z;
+            if (t < 0 || t > 1 || t == float.NaN) 
                 return Double3m.Nan;
 
             return GetPoint(t);
         }
-        public double MajorDimension()
+        public float MajorDimension()
         {
-            double max = Math.Max(Math.Abs( Direction.X), Math.Abs(Direction.Y));
-            return Math.Max(max, Math.Abs( Direction.Z));
+            float max = MathF.Max(MathF.Abs( Direction.X), MathF.Abs(Direction.Y));
+            return MathF.Max(max, MathF.Abs( Direction.Z));
             
         }
 

@@ -23,12 +23,12 @@
         /// <inheritdoc/>
         public override IEnumerable<(Double3m, Double3m)> BoundingBoxes => throw new NotImplementedException();
         /// <inheritdoc/>
-        public override double RecommendedInterval => 1d/(double)(straights.Count*3d);
+        public override float RecommendedInterval => 1f/(float)(straights.Count*3f);
         /// <inheritdoc/>
-        public override Double3m GetPoint(double T)
+        public override Double3m GetPoint(float T)
         {
-            double t = T * ((straights.Count - 2) / 2);
-            double localT = t % 1;
+            float t = T * ((straights.Count - 2) / 2);
+            float localT = t % 1;
             int index = (int)Math.Floor(t) * 2;
 
 

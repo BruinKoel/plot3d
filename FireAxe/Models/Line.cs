@@ -9,9 +9,9 @@ namespace FireAxe.Models
 
         private Curve Curve2D { get; set; }
 
-        public double SegmentResolution { get; set; }
+        public float SegmentResolution { get; set; }
 
-        public Line( Double3m start,  Double3m end, double depth = 1000)
+        public Line( Double3m start,  Double3m end, float depth = 1000)
         {
             Curve2D = new Straigth(start, end);
             SegmentResolution = 1 / depth;
@@ -20,7 +20,7 @@ namespace FireAxe.Models
 
 
 
-        public Double3m GetPoint(double T)
+        public Double3m GetPoint(float T)
         {
             return Curve2D.GetPoint(T);
         }

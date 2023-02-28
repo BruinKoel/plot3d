@@ -67,7 +67,7 @@ namespace FireAxe.FireMath
         /// </summary>
         /// <param name="box"></param>
         /// <returns></returns>
-        public static double Volume((Double3m, Double3m) box)
+        public static float Volume((Double3m, Double3m) box)
         {
             var temp = (box.Item2 - box.Item1);
             return temp.X * temp.Y * temp.Z;

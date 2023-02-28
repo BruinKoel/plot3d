@@ -69,9 +69,9 @@
         }
         public void VSort()
         {
-            double p1 = 0;
-            double p2 = 0;
-            double p3 = 0;
+            float p1 = 0;
+            float p2 = 0;
+            float p3 = 0;
 
             if (p3 > p2 || p2 > p1)
             {

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace FireAxe.FireMath
 {
     /// <summary>
@@ -21,16 +22,21 @@ namespace FireAxe.FireMath
         /// <param name="straight"></param>
         /// <param name="stopThreshold"></param>
         /// <param name="fillWeight"></param>
-        public static void StraightFill(ScalarField field ,  Straigth straight, double stopThreshold = 1, double fillWeight = 1)
+        public static void StraightFill(ScalarField field ,  Straigth straight, float stopThreshold = 1, float fillWeight = 1)
         {
-            double stepsize = field.tolerance / straight.MajorDimension();
-            stepsize /= 2;
+            
+            //float stepsize = (straight.MajorDimension() < field.tolerance)? straight.MajorDimension() / field.tolerance : 1f;
+            float stepsize =  field.tolerance / straight.MajorDimension() ;
+            if (straight.MajorDimension() < field.tolerance )
+            {
+                stepsize = 1;
+            }
 
-            for(double t = 0; t <= 1; t += stepsize)
+            for(float t = 0; t <= 1; t += stepsize)
             {
                 Double3m point = straight.GetPoint(t);
 
-                field.AddPoint(point, fillWeight);
+                field.SetPoint(point, fillWeight);
                 if ((field.GetPoint(point) - fillWeight) >= stopThreshold)
                 {
                     break;
@@ -45,12 +51,12 @@ namespace FireAxe.FireMath
         /// <param name="fillStraight"></param>
         /// <param name="stopThreshold"></param>
         /// <param name="fillWeight"></param>
-        public static void CompoundFill(ScalarField field, Straigth pathStraight, Straigth fillStraight, double stopThreshold = 1, double fillWeight = 1)
+        public static void CompoundFill(ScalarField field, Straigth pathStraight, Straigth fillStraight, float stopThreshold = 1, float fillWeight = 1)
         {
             
-            double stepsize = field.tolerance / pathStraight.Length;
+            float stepsize = field.tolerance / pathStraight.Length;
             stepsize /= 2;
-            for (double t = 0; t <= 1; t += stepsize)
+            for (float t = 0; t <= 1; t += stepsize)
             {
                 Double3m point = pathStraight.GetPoint(t);
                 fillStraight.Offset = point;
@@ -67,7 +73,7 @@ namespace FireAxe.FireMath
         /// <param name="field"></param>
         /// <param name="triangle"></param>
         /// <param name="weight"></param>
-        public static void TriangleFill(ScalarField field, Triangle triangle, double weight = 1)
+        public static void TriangleFill(ScalarField field, Triangle triangle, float weight = 1)
         {
             
 
@@ -78,13 +84,13 @@ namespace FireAxe.FireMath
             
 
 
-            double stepsize = field.tolerance / a.MajorDimension();
+            float stepsize = field.tolerance / a.MajorDimension();
             stepsize /= 2;
-            for (double t = 0; t <= 1; t += stepsize)
+            for (float t = 0; t <= 1; t += stepsize)
             {
                 b.Offset = a.GetPoint(t);
-                b.Direction = baseDirectiion * (1d-t);
-                StraightFill(field, b,double.MaxValue,weight);
+                b.Direction = baseDirectiion * (1f-t);
+                StraightFill(field, b,float.MaxValue,weight);
             }
 
 

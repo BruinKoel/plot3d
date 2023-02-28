@@ -1,20 +1,22 @@
 ﻿using FireAxe.FireMath;
 using FireAxe.Models.GeometryFormats;
+using System.Reflection.Metadata;
+using Tensorflow;
 
 namespace FireAxe.Models
 {
     public class ScalarField
     {
-        private double[,,] field;
+        private Dictionary<(int, int, int), float> field;
         private Double3m offset;
         private (Double3m, Double3m) boundingBox;
 
-        public double tolerance { get; private set; }
+        public float tolerance { get; private set; }
 
         public ScalarField DeepCopy(int corner = 0)
         {
             Double3m position = 0;
-            switch(corner)
+            switch (corner)
             {
                 case 0:
                     position = boundingBox.Item1;
@@ -42,7 +44,8 @@ namespace FireAxe.Models
                     break;
             }
 
-            return new ScalarField(field, tolerance) {
+            return new ScalarField(field.ToDictionary(entry => entry.Key, entry => entry.Value), tolerance)
+            {
                 boundingBox = this.boundingBox,
             };
         }
@@ -52,7 +55,7 @@ namespace FireAxe.Models
         /// </summary>
         /// <param name="points"></param>
         /// <param name="tolerance"></param>
-        public ScalarField(IEnumerable<Double3m> points, double tolerance)
+        public ScalarField(IEnumerable<Double3m> points, float tolerance)
         {
             this.boundingBox = BoundingBoxes.From(points);
             Double3m Crossbar = boundingBox.Item2 - boundingBox.Item1;
@@ -60,13 +63,13 @@ namespace FireAxe.Models
             Crossbar += 1;
 
 
-            field = new double[(int)Crossbar.X, (int)Crossbar.Y, (int)Crossbar.Z];
+            //field = new float[(int)Crossbar.X, (int)Crossbar.Y, (int)Crossbar.Z];
 
-            offset = boundingBox.Item1 ;
+            offset = boundingBox.Item1;
 
             this.tolerance = tolerance;
 
-           AddPoint(points);
+            AddPoint(points);
         }
 
         /// <summary>
@@ -74,116 +77,100 @@ namespace FireAxe.Models
         /// </summary>
         /// <param name="triangles"></param>
         /// <param name="tolerance"></param>
-        public ScalarField(IEnumerable<Triangle> triangles, double tolerance)
+        public ScalarField(IEnumerable<Triangle> triangles, float tolerance)
         {
-            tolerance = tolerance.Equals(-1) ? triangles.Max(x => x.v1.Z) / 400 : tolerance;
+            tolerance = tolerance.Equals(-1) ? triangles.Max(x => x.v1.Z) / 200 : tolerance;
 
             this.boundingBox = BoundingBoxes.From(triangles);
-            Double3m Crossbar = boundingBox.Item2 - boundingBox.Item1;
-            Crossbar /= tolerance;
-            Crossbar += 2;
 
 
-            field = new double[(int)Crossbar.X, (int)Crossbar.Y, (int)Crossbar.Z];
 
-            offset = boundingBox.Item1 - tolerance;
+            field = new Dictionary<(int, int, int), float>();
+
+            field.SetDefault(new(0, 0, 0), 0);
+
+
+
 
             this.tolerance = tolerance;
 
             AddTriangle(triangles);
-            
+
         }
 
 
-        public ScalarField(double[,,] field, double tolerance)
+        public ScalarField(Dictionary<(int, int, int), float> field, float tolerance)
         {
-            this.field = new double[field.GetLength(0), field.GetLength(1), field.GetLength(2)];
-            for(int x = 0; x < field.GetLength(0); x++)
-            {
-                for (int y = 0; y < field.GetLength(1); y++)
-                {
-                    for (int z = 0; z < field.GetLength(2); z++)
-                    {
-                        this.field[x, y, z] = field[x, y, z];
-                    }
-                }
-            }
+            this.field = field;
             this.tolerance = tolerance;
         }
 
-        public double sum()
+        public float sum()
         {
 
-            double sum = 0;
-            for (int i = 0; i < field.GetLength(0); i++)
-            {
-                for (int j = 0; j < field.GetLength(1); j++)
-                {
-                    for (int k = 0; k < field.GetLength(2); k++)
-                    {
-                        sum += field[i, j, k];
-                    }
-                }
-            }
-            return sum;
+
+            return field.Values.Sum();
 
         }
-        public bool Contains(out Double3m index, Double3m point)
+        public bool Contains(out (int, int, int) index, Double3m point)
         {
-            index = (point - offset) / tolerance;
-            if (BoundingBoxes.Intersect(boundingBox, point))
+            point /= tolerance;
+            index = new((int)point.X, (int)point.Y, (int)point.Z);
+
+            if (field.ContainsKey(index))
             {
+
                 return true;
             }
-            return false;
+            field.Add(index, 0);
+            return true;
         }
-        public double GetPoint(Double3m point)
+        public float GetPoint(Double3m point)
         {
-            Double3m index;
-            if (Contains(out index, point))
+            (int, int, int) index;
+            if (Contains(out index, point/tolerance))
             {
-                return field[(int)index.X, (int)index.Y, (int)index.Z];
+                return field.GetValueOrDefault(index);
             }
-            return double.NaN;
+            return float.NaN;
         }
-        public double GetPoint(Tuple<int, int, int> point)
+        public float GetPoint((int, int, int) point)
         {
-            if (Contains(out _, new Double3m(point.Item1, point.Item2, point.Item3)))
-            {
-                return field[point.Item1, point.Item2, point.Item3];
-            }
-            return 0;
+            return field.GetValueOrDefault(point);
         }
-        private void AddPoint(IEnumerable<Double3m> points, double weight = 1)
+        private void AddPoint(IEnumerable<Double3m> points, float weight = 1)
         {
+            (int,int,int) index;
             foreach (var point in points)
             {
-                AddPoint(point, weight);
+                Contains(out index, point);
+                field[index] = weight;
             }
         }
-        public void SetPoint(Double3m point, double weight = 1)
+        public void SetPoint(Double3m point, float weight = 1)
         {
-            Double3m index;
+            (int, int, int) index;
             if (Contains(out index, point))
             {
-                field[(int)index.X, (int)index.Y, (int)index.Z] = weight;
+                field.Remove(index);
+                field.Add(index, weight);
             }
 
         }
 
-        public void AddPoint(Double3m point, double weight = 1)
+        public void AddPoint(Double3m point, float weight = 1)
         {
-            Double3m index;
+            (int, int, int) index;
             if (Contains(out index, point))
             {
-                field[(int)index.X, (int)index.Y, (int)index.Z] += weight;
+                field[index] += weight;
                 return;
             }
 
         }
 
 
-        private void AddTriangle(IEnumerable<Triangle> triangles, double weight = 1)
+        private void AddTriangle(IEnumerable<Triangle> triangles, float weight = 1)
         {
             foreach (var triangle in triangles)
             {
@@ -191,7 +178,7 @@ namespace FireAxe.Models
             }
         }
 
-        private void AddTriangle(Triangle triangle, double weight = 1)
+        private void AddTriangle(Triangle triangle, float weight = 1)
         {
             ScalarFields.TriangleFill(this, triangle, weight);
 
@@ -200,6 +187,8 @@ namespace FireAxe.Models
 
         public void AddBoundingBoxIntersection((Double3m, Double3m) box)
         {
+            throw new NotImplementedException();
+            /*
             box.Item1 = box.Item1 - offset;
             for (int x = 0; x < field.GetLength(0); x++)
             {
@@ -216,74 +205,46 @@ namespace FireAxe.Models
                         field[x, y, z] = hit ? 1d : 0d;
                     }
                 }
-            }
+            }*/
         }
         /// <summary>
         /// returns all values with their corresponding coordinates.
         /// </summary>
-        public List<(Double3m, double)> values
+        public List<(Double3m, float)> values
         {
             get
             {
 
-                List<(Double3m, double)> temp = new List<(Double3m, double)>();
-                for (int x = 0; x < field.GetLength(0); x++)
-                {
-                    for (int y = 0; y < field.GetLength(1); y++)
-                    {
-                        for (int z = 0; z < field.GetLength(2); z++)
-                        {
-                            if (field[x, y, z].Equals(0)) continue;
-                            temp.Add((new Double3m(x, y, z)*tolerance, field[x, y, z]));
-                        }
-                    }
-                }
-                return temp;
+
+                return field.Keys.Select(x => (new Double3m(x), field.get(x))).ToList();
             }
         }
         /// <summary>
         /// Limits the weight of each value to a maximum of <paramref name="cap"/>
         /// </summary>
         /// <param name="cap"></param>
-        public void CapWeight(double cap)
+        public void CapWeight(float cap)
         {
-            for (int x = 0; x < field.GetLength(0); x++)
+            foreach (var key in field.Keys)
             {
-                for (int y = 0; y < field.GetLength(1); y++)
                 {
+                    field[key] = field[key] > cap ? cap : field[key];
 
-                    for (int z = 0; z < field.GetLength(2); z++)
-                    {
-                        if (field[x, y, z] > cap)
-                        {
-                            field[x, y, z] = cap;
-                        }
-                    }
                 }
-            }
 
+
+            }
         }
         /// <summary>
         /// transforms all values of the field to either 1  when greater than 1 and 0 otherwise.
         /// </summary>
         public void Boolean()
         {
-            for (int x = 0; x < field.GetLength(0); x++)
+            foreach (var key in field.Keys)
             {
-                for (int y = 0; y < field.GetLength(1); y++)
                 {
+                    field[key] = field[key] > 0 ? 1 : 0;
 
-                    for (int z = 0; z < field.GetLength(2); z++)
-                    {
-                        if (field[x, y, z] > 0)
-                        {
-                            field[x, y, z] = 1d;
-                        }
-                        else
-                        {
-                            field[x, y, z] = 0d;
-                        }
-                    }
                 }
             }
         }
@@ -292,7 +253,8 @@ namespace FireAxe.Models
         /// </summary>
         public void RayFill()
         {
-
+            throw new NotImplementedException();
+            /*
             for (int x = 0; x < field.GetLength(0); x++)
             {
                 bool lastHit = false;
@@ -319,6 +281,7 @@ namespace FireAxe.Models
                     }
                 }
             }
+            */
         }
 
     }

@@ -44,11 +44,11 @@ namespace plot3d
         /// <returns></returns>
         public static MeshGeometry3D MeshScalarField(ScalarField field)
         {
-            field.CapWeight(4d);
+            field.CapWeight(4f);
             List<Triangle> triangles = new List<Triangle>();
             foreach (var value in field.values)
             {
-                triangles.Add(TriangleFromPoint(value.Item1, value.Item2 * field.tolerance / 2));
+                triangles.Add(TriangleFromPoint(value.Item1, value.Item2 / 2));
             }
             Geometry geometry = new Form(triangles, true);
 
@@ -69,7 +69,7 @@ namespace plot3d
         /// <param name="point"></param>
         /// <param name="scale"></param>
         /// <returns></returns>
-        private static Triangle TriangleFromPoint(Double3m point, double scale)
+        private static Triangle TriangleFromPoint(Double3m point, float scale)
         {
             Triangle triangle = new Triangle(
                 point,
@@ -129,7 +129,7 @@ namespace plot3d
         /// <param name="line"></param>
         /// <param name="width"></param>
         /// <returns></returns>
-        public static MeshGeometry3D MeshCurve(Curve line, double width = 0d)
+        public static MeshGeometry3D MeshCurve(Curve line, float width = 0f)
         {
             return MeshCurve(new MeshGeometry3D(), line, width);
         }
@@ -140,7 +140,7 @@ namespace plot3d
         /// <param name="line"></param>
         /// <param name="width"></param>
         /// <returns></returns>
-        public static MeshGeometry3D MeshCurve(IEnumerable<Curve> line, double width = 0d)
+        public static MeshGeometry3D MeshCurve(IEnumerable<Curve> line, float width = 0f)
         {
             _ = line.Count();
             var mesh = new MeshGeometry3D();
@@ -166,7 +166,7 @@ namespace plot3d
                 points.Add(currentpos);
 
             }
-            return MeshCurve(new LinearSpline(points),0.05);
+            return MeshCurve(new LinearSpline(points),0.05f);
 
         }
 
@@ -177,19 +177,19 @@ namespace plot3d
         /// <param name="line"></param>
         /// <param name="width"></param>
         /// <returns></returns>
-        public static MeshGeometry3D MeshCurve(MeshGeometry3D mesh, Curve line, double width = 0d)
+        public static MeshGeometry3D MeshCurve(MeshGeometry3D mesh, Curve line, float width = 0f)
         {
-            double SegmentResolution = line.RecommendedInterval;
+            float SegmentResolution = line.RecommendedInterval;
             if (width.Equals(0d))
             {
-                width = (line.GetPoint(0) - line.GetPoint(1)).Length * 0.02;
-                if (width > 0.01) width = 0.1;
-                if (width < 0.004) width = 0.001;
+                width = (line.GetPoint(0) - line.GetPoint(1)).Length * 0.02f;
+                if (width > 0.01) width = 0.1f;
+                if (width < 0.004) width = 0.001f;
             }
             width /= 2;
             List<Double3m> segments = new List<Double3m>();
             mesh ??= new MeshGeometry3D();
-            for (double T = 0; T <= 1; T += SegmentResolution)
+            for (float T = 0; T <= 1; T += SegmentResolution)
             {
 
                 segments.Add(line.GetPoint(T));

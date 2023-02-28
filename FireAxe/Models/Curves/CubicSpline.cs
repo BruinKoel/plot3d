@@ -19,15 +19,15 @@
                 Straigth bridge = new Straigth(points[i - 1], points[i + 1]);
 
 
-                straights.Add(new Straigth(points[i] - (bridge.GetPoint(0.5) - points[i - 1])/2, points[i]));
+                straights.Add(new Straigth(points[i] - (bridge.GetPoint(0.5f) - points[i - 1])/2, points[i]));
 
-                straights.Add(new Straigth(points[i], points[i] + (points[i + 1] - bridge.GetPoint(0.5))/2));
+                straights.Add(new Straigth(points[i], points[i] + (points[i + 1] - bridge.GetPoint(0.5f))/2));
             }
             straights.Add(new Straigth(points.Last(), points.Last()));
         }
         private List<(Double3m, Double3m)> boundingBoxes;
 
-        public override double RecommendedInterval => 1d / (double)(straights.Count * 4d);
+        public override float RecommendedInterval => 1f / (float)(straights.Count * 4f);
         public override IEnumerable<(Double3m, Double3m)> BoundingBoxes
         {
             get
@@ -36,7 +36,7 @@
 
                 boundingBoxes = new List<(Double3m, Double3m)>();
                 Double3m previous =  GetPoint(0);
-                for (double i = 1 / straights.Count; i < 1; i += 1/(double)straights.Count)
+                for (float i = 1 / straights.Count; i < 1; i += 1/(float)straights.Count)
                 {
 
                     boundingBoxes.Add(new(previous, GetPoint(i)));
@@ -48,11 +48,11 @@
         }
 
         /// <inheritdoc/>
-        public override Double3m GetPoint(double T)
+        public override Double3m GetPoint(float T)
         {
-            double t = T * ((straights.Count - 1) / 2);
-            double localT = t % 1;
-            int index = (int)Math.Floor(t) * 2;
+            float t = T * ((straights.Count - 1) / 2);
+            float localT = t % 1;
+            int index = (int)MathF.Floor(t) * 2;
 
             Straigth temp = new Straigth(
                 straights[index].GetPoint(localT),

@@ -6,23 +6,23 @@ namespace FireAxe.Models.Curves
     {
         public Double3m origin;
         public Double3m normal;
-        public double radius;
+        public float radius;
 
-        public Round(Double3m origin, Double3m normal, double radius)
+        public Round(Double3m origin, Double3m normal, float radius)
         {
             this.origin = origin;
             this.normal = normal.Normal;
             this.radius = radius;
         }
 
-        public override double RecommendedInterval => throw new NotImplementedException();
+        public override float RecommendedInterval => throw new NotImplementedException();
 
         public override IEnumerable<(Double3m, Double3m)> BoundingBoxes => throw new NotImplementedException();
 
-        public override Double3m GetPoint(double T)
+        public override Double3m GetPoint(float T)
         {
-            T *= 2 * Math.PI;
-            var point = new Double3m (Math.Sin(T), Math.Cos(T), 0d)*radius;
+            T *= 2 * MathF.PI;
+            var point = new Double3m (MathF.Sin(T), MathF.Cos(T), 0f)*radius;
             return Space.Rotate(point,normal)+origin;
         }
     }

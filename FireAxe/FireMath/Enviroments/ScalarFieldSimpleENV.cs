@@ -14,7 +14,7 @@ namespace FireAxe.FireMath.Enviroments
 
         public Double3m position;
         private SimpleNode baseNode;
-        public double lastCost;
+        public float lastCost;
 
 
 
@@ -23,7 +23,7 @@ namespace FireAxe.FireMath.Enviroments
             this.baseNode = baseNode;
             this.field = field;
             this.position = position;
-            lastCost = double.MaxValue;
+            lastCost = float.MaxValue;
 
             scalarViewer = new ScalarViewer();
         }
@@ -58,7 +58,7 @@ namespace FireAxe.FireMath.Enviroments
             {
                 if (new Double3m(scalarViewer.position) << 0) { break; }
                 var output = node.Compute(scalarViewer.View(scalarField).ToArray());
-                double maxvalue = 0;
+                float maxvalue = 0;
                 int maxindex = 0;
                 for (int i = 0; i < output.Length; i++)
                 {
@@ -170,13 +170,13 @@ namespace FireAxe.FireMath.Enviroments
             }
             return moves;
         }
-        public double CalculateCost(ScalarField field, Double3m start, Double3m[] moves)
+        public float CalculateCost(ScalarField field, Double3m start, Double3m[] moves)
         {
             {
-                double Ztravel = moves.Sum(x => Math.Abs(x.Z));
-                double summed = field.sum();
-                double cost = 1;
-                double faults = 0;
+                float Ztravel = moves.Sum(x => Math.Abs(x.Z));
+                float summed = field.sum();
+                float cost = 1;
+                float faults = 0;
 
                 Double3m current = start;
 
@@ -198,7 +198,7 @@ namespace FireAxe.FireMath.Enviroments
                         }
                         field.SetPoint(current, 0);
                     }
-                    else if (value.Equals(-1) || value.Equals(double.NaN))
+                    else if (value.Equals(-1) || value.Equals(float.NaN))
                     {
                         faults++;
                     }
@@ -245,9 +245,9 @@ namespace FireAxe.FireMath.Enviroments
                 nodes = postbatch.Select(x => x.baseNode).ToList();
 
 
-                int half = (int)Math.Round((double)batch.Count() / 2f);
-                double odds = 0.2;
-                double factor = 0.3;
+                int half = (int)Math.Round((float)batch.Count() / 2f);
+                float odds = 0.2f;
+                float factor = 0.3f;
 
                 Parallel.For(0, half, (k) =>
                 {

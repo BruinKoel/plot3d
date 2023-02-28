@@ -9,9 +9,9 @@ namespace FireAxe.Models.Gym
 {
     public class Gym
     {
-        public double CalculateFitness(IEnumerable<OuputPoint> points)
+        public float CalculateFitness(IEnumerable<OuputPoint> points)
         {
-            double fitness = 0;
+            float fitness = 0;
 
             foreach (OuputPoint point in points)
             {

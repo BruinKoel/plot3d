@@ -3,13 +3,13 @@
 namespace FireAxe.Models
 {
     /// <summary>
-    /// 3x1 double matrix a happy life. vector3 already exists, but then i would learn nothing.
+    /// 3x1 float matrix a happy life. vector3 already exists, but then i would learn nothing.
     /// </summary>
     public struct Double3m
     {
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double Z { get; set; }
+        public float X { get; set; }
+        public float Y { get; set; }
+        public float Z { get; set; }
 
         /// <summary>
         /// Returns a deepcopy of the object, however, struct type can just return this?
@@ -26,13 +26,21 @@ namespace FireAxe.Models
         /// <param name="X"></param>
         /// <param name="Y"></param>
         /// <param name="Z"></param>
-        public Double3m(double X, double Y, double Z)
+        public Double3m(float X, float Y, float Z)
         {
             this.X = X;
             this.Y = Y;
             this.Z = Z;
         }
-        public Double3m(Tuple<double, double, double> point)
+
+        public Double3m((int,int,int) pos)
+        {
+            this.X = pos.Item1;
+            this.Y = pos.Item2;
+            this.Z = pos.Item3;
+        }
+
+        public Double3m(Tuple<float, float, float> point)
         {
             this.X = point.Item1;
             this.Y = point.Item2;
@@ -47,19 +55,19 @@ namespace FireAxe.Models
         }
 
         /// <summary>
-        /// coordiante doubles are double.Nan
+        /// coordiante floats are float.Nan
         /// </summary>
         public static Double3m Nan
         {
             get
             {
-                return new Double3m { X = double.NaN, Y = double.NaN, Z = double.NaN };
+                return new Double3m { X = float.NaN, Y = float.NaN, Z = float.NaN };
             }
         }
         /// <summary>
         /// returns the squared length when enterpenting as a vector.
         /// </summary>
-        public double LengthSquared
+        public float LengthSquared
         {
             get
             {
@@ -69,11 +77,11 @@ namespace FireAxe.Models
         /// <summary>
         /// returns the length when enterpenting as a vector.
         /// </summary>
-        public double Length
+        public float Length
         {
             get
             {
-                return Math.Sqrt(LengthSquared);
+                return MathF.Sqrt(LengthSquared);
             }
         }
         /// <summary>
@@ -85,9 +93,9 @@ namespace FireAxe.Models
             {
                 return new Double3m()
                 {
-                    X = Math.Abs(this.X),
-                    Y = Math.Abs(this.Y),
-                    Z = Math.Abs(this.Z)
+                    X = MathF.Abs(this.X),
+                    Y = MathF.Abs(this.Y),
+                    Z = MathF.Abs(this.Z)
                 };
 
             }
@@ -101,9 +109,9 @@ namespace FireAxe.Models
             {
                 return new Double3m()
                 {
-                    X = Math.Round(this.X),
-                    Y = Math.Round(this.Y),
-                    Z = Math.Round(this.Z)
+                    X = MathF.Round(this.X),
+                    Y = MathF.Round(this.Y),
+                    Z = MathF.Round(this.Z)
                 };
             }
 
@@ -116,9 +124,9 @@ namespace FireAxe.Models
             get
             {
                 return
-                    X is double.NaN
-                    || Y is double.NaN
-                    || Z is double.NaN;
+                    X is float.NaN
+                    || Y is float.NaN
+                    || Z is float.NaN;
             }
         }
 
@@ -129,7 +137,7 @@ namespace FireAxe.Models
         {
             get
             {
-                double scalair = this.Length;
+                float scalair = this.Length;
                 if (scalair.Equals(0)) return new Double3m();
                 return this / scalair;
 
@@ -138,10 +146,10 @@ namespace FireAxe.Models
 
 
         /// <summary>
-        /// converts a single double to a matrix filled with
+        /// converts a single float to a matrix filled with
         /// </summary>
         /// <param name="matrix"></param>
-        public static implicit operator Double3m(double matrix)
+        public static implicit operator Double3m(float matrix)
         {
             return new Double3m(matrix, matrix, matrix);
         }
@@ -169,7 +177,7 @@ namespace FireAxe.Models
         /// <param name="matrix1"></param>
         /// <param name="matrix2"></param>
         /// <returns></returns>
-        public static double operator %(Double3m matrix1, Double3m matrix2)
+        public static float operator %(Double3m matrix1, Double3m matrix2)
         {
             Double3m result = matrix1 * matrix2;
             return result.X + result.Y + result.Z;
@@ -350,7 +358,7 @@ namespace FireAxe.Models
     /// </summary>
     public class MatrixCompare : EqualityComparer<Double3m>
     {
-        private const double tolerance = 0.00001;
+        private const float tolerance = 0.00001f;
         public override bool Equals(Double3m matrix1, Double3m matrix2)
         {
             return matrix1 == matrix2;

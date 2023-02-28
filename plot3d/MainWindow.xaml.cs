@@ -78,7 +78,7 @@ namespace plot3d
             var randomPoints = Enumerable.Range(0, 100).Select(x => this.randomPoints());
 
             //var temp = new CubicSpline(randomPoints);
-            plot.addModel(Meshify.MeshCurve(randomPoints.Select(x => new CubicSpline(x)), 0.01));
+            plot.addModel(Meshify.MeshCurve(randomPoints.Select(x => new CubicSpline(x)), 0.01f));
             //plot.addModel(Meshify.MeshCurve(new LinearSpline(randomPoints), 0.01));
             //plot.addModel(Meshify.MeshBoundingBoxes(temp));
 
@@ -88,9 +88,9 @@ namespace plot3d
 
         bool DisableTrack = true;
         CubicSpline track;
-        double trackT;
+        float trackT;
 
-        private void MoveAlongRandomSpline(double size = 0.00001)
+        private void MoveAlongRandomSpline(float size = 0.00001f)
         {
             if (DisableTrack)
             {
@@ -100,7 +100,7 @@ namespace plot3d
             }
             track ??= new CubicSpline(randomPoints());
 
-            plot.SetCamera(track.GetPoint(trackT += size));
+            plot.SetCamera(track.GetPoint((trackT += size)));
             if (trackT >= 1) DisableTrack = !DisableTrack;
         }
         private List<Double3m> randomPoints(int count = 100)
@@ -111,9 +111,9 @@ namespace plot3d
             {
                 points.Add(points[i - 1] + new FireAxe.Models.Double3m()
                 {
-                    X = (random.NextDouble() - 0.2),
-                    Y = (random.NextDouble() - 0.2),
-                    Z = (random.NextDouble() - 0.2)
+                    X = (float)(random.NextDouble() - 0.2),
+                    Y = (float)(random.NextDouble() - 0.2),
+                    Z = (float)(random.NextDouble() - 0.2)
                 });
             }
 
@@ -121,14 +121,14 @@ namespace plot3d
         }
         private List<Double3m> circlePoints(int count = 100)
         {
-            double tempZ = random.NextDouble() * 10;
+            float tempZ = (float)random.NextDouble() * 10f;
             List<Double3m> points = new List<Double3m>();
             for (int i = -1; i < count; i++)
             {
                 points.Add(new FireAxe.Models.Double3m()
                 {
-                    X = Math.Cos(((double)i / (double)count) * 2 * Math.PI),
-                    Z = Math.Sin(((double)i / (double)count) * 2 * Math.PI),
+                    X = (float)Math.Cos(((float)i / (float)count) * 2 * Math.PI),
+                    Z = (float)Math.Sin(((float)i / (float)count) * 2 * Math.PI),
                     Y = kok
                 });
             }
@@ -146,7 +146,7 @@ namespace plot3d
 
         private void SimpleSplineButton(object sender, RoutedEventArgs e)
         {
-            plot.addModel(Meshify.MeshCurve(new SimpleSpline(randomPoints()), 0.02));
+            plot.addModel(Meshify.MeshCurve(new SimpleSpline(randomPoints()), 0.02f));
         }
 
         private void TrackCameraButton(object sender, RoutedEventArgs e)
@@ -156,7 +156,7 @@ namespace plot3d
         int kok = 0;
         private void CubicCircleButton(object sender, RoutedEventArgs e)
         {
-            plot.addModel(Meshify.Mesh(new Cylinder(1,4,10,new Double3m(random.NextDouble(), random.NextDouble(), random.NextDouble()).Normal)));
+            plot.addModel(Meshify.Mesh(new Cylinder(1,4,10,new Double3m((float)random.NextDouble(), (float)random.NextDouble(), (float)random.NextDouble()).Normal)));
         }
 
         private void LoadSTLButton(object sender, RoutedEventArgs e)
@@ -183,8 +183,8 @@ namespace plot3d
 
         private void SliceModelButton(object sender, RoutedEventArgs e)
         {
-            double layerheight = 0.5;
-            double offsett = random.NextDouble() * 5;
+            float layerheight = 0.5f;
+            float offsett = (float)random.NextDouble() * 5f;
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
             {
@@ -245,7 +245,7 @@ namespace plot3d
             {
                 Construct stl = new Construct(new STL(System.IO.File.ReadAllBytes(openFileDialog.FileName)));
 
-                var field = stl.geometry.AsScalarField(0.01);
+                var field = stl.geometry.AsScalarField();
                 field.Boolean();
                 ScalarViewer scalarViewer = new ScalarViewer();
 

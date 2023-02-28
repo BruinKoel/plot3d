@@ -4,13 +4,13 @@ namespace FireAxe.FireMath
 {
     public static class Space
     {
-        public static Double3m Rotate(Double3m point, Double3m axis, double angle)
+        public static Double3m Rotate(Double3m point, Double3m axis, float angle)
         {
-            double sin = Math.Sin(angle);
-            double cos = Math.Cos(angle);
+            float sin = MathF.Sin(angle);
+            float cos = MathF.Cos(angle);
 
             // Rotation transformation matrix
-            double[,] rotationMatrix =
+            float[,] rotationMatrix =
             {
                 {
                     cos + (axis.X * axis.X * (1 - cos)),
@@ -46,10 +46,10 @@ namespace FireAxe.FireMath
                 GetAngle(new Double3m(0, 0, 1), move));
         }
 
-        public static double GetAngle(Double3m v1, Double3m v2)
+        public static float GetAngle(Double3m v1, Double3m v2)
         {
             // Angle in radians
-            return Math.Acos(v1 % v2 / (v1.Length * v2.Length));
+            return MathF.Acos(v1 % v2 / (v1.Length * v2.Length));
 
         }
 

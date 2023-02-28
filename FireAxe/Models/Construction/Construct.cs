@@ -31,14 +31,14 @@ namespace FireAxe.Models
 
         
 
-        private double layerheight;
+        private float layerheight;
         List<List<Curve>> Slices;
         /// <summary>
         /// Slice object and return bag of curves
         /// </summary>
         /// <param name="layerheight"></param>
         /// <returns></returns>
-        public List<List<Curve>> Slice(double layerheight = 0.4)
+        public List<List<Curve>> Slice(float layerheight = 0.4f)
         {
             if (Slices != null) return Slices;
 
@@ -70,7 +70,7 @@ namespace FireAxe.Models
         private void AssignTriangle(Triangle triangle)
         {
             triangle.ZSort();
-            while (Slices.Count <= (int)Math.Ceiling(triangle.v3.Z / layerheight) +2)
+            while (Slices.Count <= (int)MathF.Ceiling(triangle.v3.Z / layerheight) +2)
             {
                 Slices.Add(new List<Curve>());
             }
@@ -81,7 +81,7 @@ namespace FireAxe.Models
 
            
 
-            double heightPointer = Math.Ceiling( triangle.v1.Z / layerheight)*layerheight;
+            float heightPointer = MathF.Ceiling( triangle.v1.Z / layerheight)*layerheight;
             long lastcount = -1;
             while (Slices.SelectMany(x => x).Count() > lastcount)
             {
@@ -91,14 +91,14 @@ namespace FireAxe.Models
                 {
                     var temp = straigth.InverseZ(heightPointer);
                     if(temp != null 
-                        && !temp.X.Equals(double.NaN)
-                        && !temp.Y.Equals(double.NaN)
-                        && !temp.Z.Equals( double.NaN) )
+                        && !temp.X.Equals(float.NaN)
+                        && !temp.Y.Equals(float.NaN)
+                        && !temp.Z.Equals( float.NaN) )
                         straightProjections.Add(temp);
                 }
                 if (straightProjections.Count > 0)
                 {
-                    Slices[(int)Math.Ceiling(heightPointer / layerheight)].Add(new LinearSpline(straightProjections));
+                    Slices[(int)MathF.Ceiling(heightPointer / layerheight)].Add(new LinearSpline(straightProjections));
                 }
                 
                 heightPointer += layerheight;

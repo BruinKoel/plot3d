@@ -62,11 +62,11 @@ namespace FireAxe.Models.GeometryFormats
             return triangle;
         }
 
-        public double getMaxDistance(Double3m p1, Double3m p2)
+        public float getMaxDistance(Double3m p1, Double3m p2)
         {
-            double tempo = Math.Abs(p1.X - p2.X);
-            tempo += Math.Abs(p1.Y - p2.Y);
-            return tempo + Math.Abs(p1.Z - p2.Z);
+            float tempo = MathF.Abs(p1.X - p2.X);
+            tempo += MathF.Abs(p1.Y - p2.Y);
+            return tempo + MathF.Abs(p1.Z - p2.Z);
         }
 
         public override void RegenerateMesh()

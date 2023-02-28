@@ -46,7 +46,7 @@ namespace FireAxe.Models.Construction
         /// </summary>
         public void LiftZ()
         {
-            double min = double.MaxValue;
+            float min = float.MaxValue;
             foreach (Triangle triangle in triangles)
             {
                 if (triangle.v1.Z < min) min = triangle.v1.Z;
@@ -94,7 +94,7 @@ namespace FireAxe.Models.Construction
                 if (i + blockSize > triangles.Count) blockSize = triangles.Count - i;
                 CalculateIndices(triangles.GetRange(i, blockSize));
             }
-            Debug.WriteLine($"Loaded STL, vertex ratio {(double)vertices.Count / (double)(triangles.Count * 3d)}");
+            Debug.WriteLine($"Loaded STL, vertex ratio {(float)vertices.Count / (float)(triangles.Count * 3d)}");
         }
         /// <summary>
         /// Calculates the Indices and Vertices collection for aa give list of triangles.
@@ -168,7 +168,7 @@ namespace FireAxe.Models.Construction
         /// </summary>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public ScalarField AsScalarField(double tolerance = -1)
+        public ScalarField AsScalarField(float tolerance = -1)
         {
             buildTrianglesFromIndices();
             return new ScalarField(triangles, tolerance);

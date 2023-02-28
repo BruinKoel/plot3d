@@ -4,9 +4,9 @@ namespace FireAxe.FireMath.Enviroments.DataViewers
 {
     public class ScalarViewer
     {
-        private Tuple<int, int, int>[][] visorCache;
+        private (int, int, int)[][] visorCache;
 
-        public Tuple<int, int, int> position;
+        public (int, int, int) position;
 
         public int ViewSize
         {
@@ -22,7 +22,7 @@ namespace FireAxe.FireMath.Enviroments.DataViewers
 
         public void MovePosition(Double3m move)
         {
-            position =new Tuple<int, int, int>( 
+            position =new ( 
                 position.Item1 + (int)move.X , 
                 position.Item2 + (int)move.Y, 
                 position.Item3 + (int)move.Z);
@@ -67,7 +67,7 @@ namespace FireAxe.FireMath.Enviroments.DataViewers
             return positions.ToArray();
         }
 
-        public Double3m[] GetLinePositions(Double3m vector, double length)
+        public Double3m[] GetLinePositions(Double3m vector, float length)
         {
             /// The GetLinePostitions returns all positions along vector where the position components are whole numbers and not more distant than length from (0,0,0).
 
@@ -81,28 +81,28 @@ namespace FireAxe.FireMath.Enviroments.DataViewers
             return positions.ToArray();
         }
 
-        public List<Double3m[]> GetViewCloud(int radius, double viewDistance)
+        public List<Double3m[]> GetViewCloud(int radius, float viewDistance)
         {
             /// the GetViewCloud function returns a list of rays consisting of positions from the GetLinePositions function for every position of the GetPositions function.
             return GetPositions(radius).Select(x => GetLinePositions(x, viewDistance)).ToList();
         }
 
-        public void Init(int radius, double viewDistance)
+        public void Init(int radius, float viewDistance)
         {
-            position = new Tuple<int, int, int>(0, 0, 0);
+            position = new (0, 0, 0);
             visorCache = GetViewCloud(radius, viewDistance).Select(x =>
                 x.Select(y =>
-                    new Tuple<int, int, int>((int)y.X, (int)y.X, (int)y.Z))
+                   ((int)y.X, (int)y.X, (int)y.Z))
                 .ToArray()).ToArray();
         }
 
 
-        public List<double> View(ScalarField field)
+        public List<float> View(ScalarField field)
         {
 
-            /// the View function returns an array of doubles.
+            /// the View function returns an array of floats.
             /// for every array of tuples in visorCache you multiply the value of this position in the sclarfield by 1/(2^j) and then add it
-            List<double> result = new List<double>();
+            List<float> result = new List<float>();
             
             for (int i = 0; i < visorCache.GetLength(0); i++)
             {
@@ -111,8 +111,8 @@ namespace FireAxe.FireMath.Enviroments.DataViewers
                 {
                     var pos = visorCache[i][j];
                     pos = new (pos.Item1 + position.Item1, pos.Item2 + position.Item2, pos.Item3 + position.Item3);
-                    double value = field.GetPoint(pos);
-                    double weight = 1d / Math.Pow(2, j+1);
+                    float value = field.GetPoint(pos);
+                    float weight = 1f / MathF.Pow(2, j+1);
                     result[i] += value * weight;
 
                 }

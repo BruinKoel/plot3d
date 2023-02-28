@@ -27,7 +27,7 @@ namespace FireAxe.FireMath
 
             });
             int finalCount = curves.Count;
-            Debug.WriteLine($"removed {startingCount - finalCount} curves {(double)finalCount / (double)startingCount} ratio");
+            Debug.WriteLine($"removed {startingCount - finalCount} curves {(float)finalCount / (float)startingCount} ratio");
             return curves;
         }
         public static Arc GetGeodesic(Cylinder cylinder, Double3m point1, Double3m point2)
@@ -40,26 +40,26 @@ namespace FireAxe.FireMath
             Double3m transformedPoint2 = Space.Rotate(point2, cylinder.normal);
 
             // Cylindrical coordinates of the transformed points
-            double theta1 = Math.Atan2(transformedPoint1.Y, transformedPoint1.X);
-            double r1 = Math.Sqrt(transformedPoint1.X * transformedPoint1.X + transformedPoint1.Y * transformedPoint1.Y);
-            double zCoord1 = transformedPoint1.Z;
+            float theta1 = MathF.Atan2(transformedPoint1.Y, transformedPoint1.X);
+            float r1 = MathF.Sqrt(transformedPoint1.X * transformedPoint1.X + transformedPoint1.Y * transformedPoint1.Y);
+            float zCoord1 = transformedPoint1.Z;
 
-            double theta2 = Math.Atan2(transformedPoint2.Y, transformedPoint2.X);
-            double r2 = Math.Sqrt(transformedPoint2.X * transformedPoint2.X + transformedPoint2.Y * transformedPoint2.Y);
-            double zCoord2 = transformedPoint2.Z;
+            float theta2 = MathF.Atan2(transformedPoint2.Y, transformedPoint2.X);
+            float r2 = MathF.Sqrt(transformedPoint2.X * transformedPoint2.X + transformedPoint2.Y * transformedPoint2.Y);
+            float zCoord2 = transformedPoint2.Z;
 
             // Difference between the azimuthal angles
-            double dTheta = theta2 - theta1;
+            float dTheta = theta2 - theta1;
 
             // Length of the geodesic
-            double length = cylinder.radius * Math.Abs(dTheta);
+            float length = cylinder.radius * MathF.Abs(dTheta);
 
             // Midpoint of the geodesic
-            double thetaMid = (theta1 + theta2) / 2;
-            double rMid = cylinder.radius;
-            double zCoordMid = (zCoord1 + zCoord2) / 2;
+            float thetaMid = (theta1 + theta2) / 2;
+            float rMid = cylinder.radius;
+            float zCoordMid = (zCoord1 + zCoord2) / 2;
 
-            Double3m midPoint = new Double3m((float)(rMid * Math.Cos(thetaMid)), (float)(rMid * Math.Sin(thetaMid)), (float)zCoordMid);
+            Double3m midPoint = new Double3m((float)(rMid * MathF.Cos(thetaMid)), (float)(rMid * Math.Sin(thetaMid)), (float)zCoordMid);
 
             // Center of the arc
             Double3m center = midPoint + (cylinder.normal * (midPoint % cylinder.normal));
@@ -68,7 +68,7 @@ namespace FireAxe.FireMath
                 center,
                 ((point1 - point2) ^ (point2 - center)).Normal,
                 (point1 - center).Length,
-                theta1 / (2 * Math.PI), theta2 / (2 * Math.PI));
+                theta1 / (2 * MathF.PI), theta2 / (2 * MathF.PI));
 
 
         }
@@ -92,7 +92,7 @@ namespace FireAxe.FireMath
 
             }
             int finalCount = curves.Count;
-            Debug.WriteLine($"removed {startingCount - finalCount} curves {(double)finalCount / (double)startingCount} ratio");
+            Debug.WriteLine($"removed {startingCount - finalCount} curves {(float)finalCount / (float)startingCount} ratio");
             return curves;
         }
         /// <summary>
@@ -105,7 +105,7 @@ namespace FireAxe.FireMath
             List<Double3m> points = new();
             foreach (Curve curve in curves)
             {
-                for (double T = 0; T < 1; T += curve.RecommendedInterval)
+                for (float T = 0; T < 1; T += curve.RecommendedInterval)
                 {
                     points.Add(curve.GetPoint(T));
                 }

@@ -15,10 +15,10 @@ namespace FireAxe.Models.Curves
         
 
         public override IEnumerable<(Double3m, Double3m)> BoundingBoxes => throw new NotImplementedException();
-        public override double RecommendedInterval => 1d / 100;
-        public override Double3m GetPoint(double T)
+        public override float RecommendedInterval => 1f / 100f;
+        public override Double3m GetPoint(float T)
         {
-            return 0d;
+            return 0f;
 
         }
     }

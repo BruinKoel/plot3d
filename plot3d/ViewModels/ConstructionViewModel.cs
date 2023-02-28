@@ -39,9 +39,9 @@ namespace plot3d.ViewModels
             {
                 points.Add(points[i - 1] + new FireAxe.Models.Double3m()
                 {
-                    X = (random.NextDouble() - 0.2),
-                    Y = (random.NextDouble() - 0.2),
-                    Z = (random.NextDouble() - 0.2)
+                    X = ((float)random.NextDouble() - 0.2f),
+                    Y = ((float)random.NextDouble() - 0.2f),
+                    Z = ((float)random.NextDouble() - 0.2f)
                 });
             }
 
@@ -53,7 +53,7 @@ namespace plot3d.ViewModels
             this.construct = featureBrowser.baseConstruct;
             plot3D.SetCamera(new Double3m(10, 10, 10), new Double3m(-1, -1, -1));
 
-            plot3D.addModel(Meshify.MeshCurve(new SimpleSpline(randomPoints()), 0.02));
+            plot3D.addModel(Meshify.MeshCurve(new SimpleSpline(randomPoints()), 0.02f));
 
             featureBrowser.ConstructUpdated += Refresh;
         }
