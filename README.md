@@ -1,3 +1,5 @@
+Comppiled it on another machine and it seems to not work? here is the publish of master for sanity: https://drive.google.com/file/d/1nokwCSo3RjYtXkOgHfoD0ThlCI7I-ZCa/view?usp=sharing
+
 WASD to fly, and you can click and drag the viewport to adjust your look direction.
 The WPF setup is kinda sketch, but I didn't plan on having to build this much graphics code as it wasn't the goal of this project. not even sure why i am programming this in C# anymore.
 
